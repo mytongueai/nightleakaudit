@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <pattern id="grid1" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M 54 0 L 0 0 0 54" fill="none" stroke="rgba(0,232,122,0.045)" stroke-width="0.5"/>
+    </pattern>
+    <radialGradient id="amb1" cx="20%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="rgba(0,232,122,0.11)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <radialGradient id="amb1b" cx="85%" cy="80%" r="45%">
+      <stop offset="0%" stop-color="rgba(0,232,122,0.04)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <linearGradient id="tl1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="30%" stop-color="#00E87A" stop-opacity="0.8"/>
+      <stop offset="70%" stop-color="#00E87A" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <linearGradient id="div1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="#1A2420"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="numglow">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="dotglow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- BG layers -->
+  <rect width="1080" height="1080" fill="#080A09"/>
+  <rect width="1080" height="1080" fill="url(#grid1)"/>
+  <rect width="1080" height="1080" fill="url(#amb1)"/>
+  <rect width="1080" height="1080" fill="url(#amb1b)"/>
+  <!-- Top line -->
+  <rect x="0" y="0" width="1080" height="3" fill="url(#tl1)"/>
+
+  <!-- ── LOGO BAR ── -->
+  <circle cx="56" cy="56" r="6" fill="#00E87A" filter="url(#dotglow)"/>
+  <text x="74" y="63" font-family="'Courier New', monospace" font-size="15" fill="#00E87A" letter-spacing="3" font-weight="700">NIGHTLEAK</text>
+  <text x="1024" y="63" font-family="'Courier New', monospace" font-size="12" fill="#3A4A40" text-anchor="end" letter-spacing="2">1 / 4</text>
+
+  <!-- ── EYEBROW — large, breathing room ── -->
+  <rect x="56" y="108" width="430" height="36" rx="3" fill="rgba(0,232,122,0.07)" stroke="rgba(0,232,122,0.18)" stroke-width="1"/>
+  <text x="271" y="132" font-family="'Courier New', monospace" font-size="13" fill="#00E87A" text-anchor="middle" letter-spacing="3">THE STAT THAT CHANGES EVERYTHING</text>
+
+  <!-- ── BIG NUMBER — centered, room above and below ── -->
+  <!-- Halo behind number -->
+  <ellipse cx="340" cy="310" rx="260" ry="130" fill="rgba(0,232,122,0.06)"/>
+  <text x="56" y="390" font-family="Arial Black, Arial, sans-serif" font-size="300" fill="#00E87A" font-weight="900" filter="url(#numglow)" opacity="0.92">98%</text>
+
+  <!-- ── DESCRIPTOR — tight under the number ── -->
+  <text x="56" y="448" font-family="Arial, sans-serif" font-size="30" fill="#E8F0EB" font-weight="700" letter-spacing="-0.5">of Medicare Advantage plans</text>
+  <text x="56" y="488" font-family="Arial, sans-serif" font-size="30" fill="#E8F0EB" font-weight="700" letter-spacing="-0.5">now cover <tspan fill="#00E87A">routine dental.</tspan></text>
+
+  <!-- ── DIVIDER ── -->
+  <rect x="56" y="520" width="968" height="1" fill="url(#div1)"/>
+
+  <!-- ── BODY — 3 punchy lines, well-spaced ── -->
+  <text x="56" y="570" font-family="Arial, sans-serif" font-size="22" fill="#7A9080">Your patients have active coverage sitting unused.</text>
+  <text x="56" y="616" font-family="Arial, sans-serif" font-size="22" fill="#E8F0EB">Treat a covered service without a formal Medicare</text>
+  <text x="56" y="650" font-family="Arial, sans-serif" font-size="22" fill="#E8F0EB">status and you're exposed to <tspan fill="#FF4040" font-weight="800">$2,000 per incident.</tspan></text>
+  <text x="56" y="706" font-family="Arial, sans-serif" font-size="22" fill="#7A9080">Nobody told you this decision existed.</text>
+  <text x="56" y="742" font-family="Arial, sans-serif" font-size="22" fill="#7A9080">That ends today.</text>
+
+  <!-- ── DIVIDER ── -->
+  <rect x="56" y="778" width="968" height="1" fill="url(#div1)"/>
+
+  <!-- ── THREE BOXES — full width, taller, readable ── -->
+  <!-- Box A -->
+  <rect x="56" y="800" width="296" height="88" rx="4" fill="#0E1612" stroke="rgba(0,232,122,0.3)" stroke-width="1.5"/>
+  <rect x="56" y="800" width="4" height="88" rx="2" fill="#00E87A"/>
+  <text x="174" y="835" font-family="'Courier New', monospace" font-size="13" fill="#00E87A" text-anchor="middle" letter-spacing="2" font-weight="700">ENROLL</text>
+  <text x="174" y="858" font-family="Arial, sans-serif" font-size="14" fill="#7A9080" text-anchor="middle">Capture the revenue</text>
+  <text x="174" y="877" font-family="Arial, sans-serif" font-size="12" fill="#3A4A40" text-anchor="middle">Option A</text>
+
+  <!-- Box B -->
+  <rect x="392" y="800" width="296" height="88" rx="4" fill="#0E1612" stroke="rgba(245,166,35,0.3)" stroke-width="1.5"/>
+  <rect x="392" y="800" width="4" height="88" rx="2" fill="#F5A623"/>
+  <text x="540" y="835" font-family="'Courier New', monospace" font-size="13" fill="#F5A623" text-anchor="middle" letter-spacing="2" font-weight="700">OPT OUT</text>
+  <text x="540" y="858" font-family="Arial, sans-serif" font-size="14" fill="#7A9080" text-anchor="middle">File the affidavit</text>
+  <text x="540" y="877" font-family="Arial, sans-serif" font-size="12" fill="#3A4A40" text-anchor="middle">Option B</text>
+
+  <!-- Box C -->
+  <rect x="728" y="800" width="296" height="88" rx="4" fill="#0E1612" stroke="rgba(255,64,64,0.3)" stroke-width="1.5"/>
+  <rect x="728" y="800" width="4" height="88" rx="2" fill="#FF4040"/>
+  <text x="876" y="835" font-family="'Courier New', monospace" font-size="13" fill="#FF4040" text-anchor="middle" letter-spacing="2" font-weight="700">STAY UNDEFINED</text>
+  <text x="876" y="858" font-family="Arial, sans-serif" font-size="14" fill="#7A9080" text-anchor="middle">Exposure zone</text>
+  <text x="876" y="877" font-family="Arial, sans-serif" font-size="12" fill="#3A4A40" text-anchor="middle">Option C</text>
+
+  <!-- ── QUESTION LINE ── -->
+  <text x="540" y="940" font-family="Arial, sans-serif" font-size="20" fill="#E8F0EB" font-weight="700" text-anchor="middle">Which box does your practice check?</text>
+
+  <!-- ── BOTTOM BAR ── -->
+  <rect x="56" y="966" width="968" height="1" fill="#1A2420"/>
+  <text x="56" y="1000" font-family="'Courier New', monospace" font-size="13" fill="#00E87A" letter-spacing="1">nightleakaudit.com/medicare</text>
+  <text x="56" y="1036" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40" letter-spacing="0.5">Free 10-min Medicare status review · No pitch</text>
+  <text x="1024" y="1036" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40" text-anchor="end">Source: Milliman 2024</text>
+</svg>

@@ -3,20 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Dental Revenue Audit — NightLeak</title>
-<meta name="description" content="The average dental practice loses $14,200/month after hours. Calculate your exact number in 15 minutes. Free audit. No pitch.">
-<meta property="og:title" content="Free Dental Revenue Audit — NightLeak">
-<meta property="og:description" content="The average dental practice loses $14,200/month after hours. Calculate your exact number in 15 minutes.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Free Dental Revenue Audit — NightLeak">
-<meta name="twitter:description" content="Calculate your exact after-hours revenue loss in 15 minutes. Free. No pitch.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Your practice is leaking revenue. Here's the exact number.</title>
+<meta name="description" content="32% of dental calls go unanswered. 75% of those patients never call back. Find out how much your practice is losing — free, 15 minutes, no pitch.">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #080A09;
+  --bg2: #0D110E;
   --surface: #111814;
   --green: #00E87A;
   --green-dim: rgba(0,232,122,0.08);
@@ -27,6 +20,7 @@
   --border: #1A2420;
   --border2: #243028;
   --red: #FF4040;
+  --amber: #F5A623;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,7 +34,6 @@ body {
   position: relative;
 }
 
-/* GRID TEXTURE */
 body::before {
   content: '';
   position: fixed;
@@ -53,29 +46,18 @@ body::before {
   z-index: 0;
 }
 
-/* SCANLINE */
 body::after {
   content: '';
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, transparent, var(--green), transparent);
-  animation: scan 6s linear infinite;
+  animation: scan 4s ease-in-out infinite;
   z-index: 100;
   opacity: 0.4;
 }
-@keyframes scan {
-  0%   { top: -3px; opacity: 0; }
-  3%   { opacity: 0.4; }
-  45%  { top: 100vh; opacity: 0.4; }
-  50%  { top: 100vh; opacity: 0; }
-  55%  { top: -3px; opacity: 0; }
-  58%  { opacity: 0.4; }
-  95%  { top: 100vh; opacity: 0.4; }
-  100% { top: 100vh; opacity: 0; }
-}
+@keyframes scan { 0%,100%{top:0;opacity:0} 10%{opacity:0.4} 90%{opacity:0.4} }
 
-/* LAYOUT */
 .wrap {
   position: relative;
   z-index: 1;
@@ -84,7 +66,7 @@ body::after {
   padding: 0 24px;
 }
 
-/* HEADER BAR */
+/* TOPBAR */
 .topbar {
   border-bottom: 1px solid var(--border);
   padding: 16px 0;
@@ -109,7 +91,6 @@ body::after {
   animation: blink 2s infinite;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
 .status-tag {
   font-family: 'Syne Mono', monospace;
   font-size: 10px;
@@ -127,7 +108,7 @@ body::after {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.hero-label {
+.hero-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -153,162 +134,72 @@ body::after {
   margin-bottom: 8px;
   font-variant-numeric: tabular-nums;
 }
-
 .hero-number-label {
   font-family: 'Syne Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text2);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
 
 .hero-headline {
-  font-size: clamp(22px, 4vw, 30px);
-  font-weight: 600;
-  line-height: 1.25;
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
   color: var(--text);
   margin-bottom: 20px;
   max-width: 560px;
+  letter-spacing: -0.02em;
 }
+.hero-headline span { color: var(--green); }
 
 .hero-sub {
   font-size: 16px;
   color: var(--text2);
   line-height: 1.7;
   max-width: 500px;
-  margin-bottom: 48px;
-  font-weight: 400;
+  margin-bottom: 40px;
 }
 
-/* PROOF STRIP */
-.proof-strip {
+/* STAT PROOF */
+.stat-row {
   display: flex;
   gap: 0;
-  margin-bottom: 56px;
   border: 1px solid var(--border);
   border-radius: 4px;
   overflow: hidden;
+  margin-bottom: 56px;
+  animation: fadeUp 0.8s ease 0.15s both;
 }
-.proof-item {
+.stat-item {
   flex: 1;
-  padding: 16px 20px;
+  padding: 18px 20px;
   border-right: 1px solid var(--border);
   text-align: center;
 }
-.proof-item:last-child { border-right: none; }
-.proof-num {
-  font-size: 24px;
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Syne Mono', monospace;
+  font-size: 22px;
   font-weight: 700;
   color: var(--green);
+  margin-bottom: 4px;
   font-variant-numeric: tabular-nums;
-  margin-bottom: 2px;
 }
-.proof-label {
+.stat-label {
   font-family: 'Syne Mono', monospace;
   font-size: 10px;
   color: var(--text3);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  line-height: 1.4;
 }
 
-/* FORM */
-.form-card {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 4px;
-  padding: 36px;
-  margin-bottom: 48px;
-  position: relative;
-  overflow: hidden;
-}
-.form-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-}
-.form-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.form-sub {
-  font-size: 13px;
-  color: var(--text2);
-  margin-bottom: 28px;
-  font-family: 'Syne Mono', monospace;
-}
-.form-fields { display: flex; flex-direction: column; gap: 14px; }
-.field-label {
-  display: block;
-  font-family: 'Syne Mono', monospace;
-  font-size: 10px;
-  color: var(--text2);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.field-input {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border2);
-  border-radius: 2px;
-  padding: 13px 16px;
-  font-size: 15px;
-  font-family: 'Syne', sans-serif;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.field-input::placeholder { color: var(--text3); }
-.field-input:focus {
-  border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(0,232,122,0.08);
-}
-.submit-btn {
-  width: 100%;
-  background: var(--green);
-  color: var(--bg);
-  border: none;
-  padding: 16px;
-  font-size: 15px;
-  font-weight: 700;
-  font-family: 'Syne', sans-serif;
-  border-radius: 2px;
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  transition: all 0.15s;
-  margin-top: 8px;
-  position: relative;
-  overflow: hidden;
-}
-.submit-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.4s;
-}
-.submit-btn:hover::after { transform: translateX(100%); }
-.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(0,232,122,0.3); }
-.submit-btn:active { transform: translateY(0); }
-
-.form-guarantee {
-  font-family: 'Syne Mono', monospace;
-  font-size: 11px;
-  color: var(--text3);
-  text-align: center;
-  margin-top: 12px;
-  letter-spacing: 0.05em;
-}
-
-/* SECTIONS */
+/* SECTION LABEL */
 .section {
   margin-bottom: 56px;
+  animation: fadeUp 0.8s ease 0.25s both;
 }
 .section-label {
   font-family: 'Syne Mono', monospace;
@@ -316,7 +207,7 @@ body::after {
   color: var(--green);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -328,11 +219,56 @@ body::after {
   background: var(--border);
 }
 
+/* LEAK GRID */
+.leak-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.leak-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 18px;
+  position: relative;
+}
+.leak-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--red);
+  border-radius: 2px 0 0 2px;
+}
+.leak-amount {
+  font-family: 'Syne Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.leak-source {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.leak-note {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  text-align: center;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* HOW IT WORKS */
 .steps { display: flex; flex-direction: column; gap: 0; }
 .step {
   display: flex;
   gap: 20px;
-  padding: 20px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--border);
 }
 .step:last-child { border-bottom: none; }
@@ -341,62 +277,91 @@ body::after {
   font-size: 11px;
   color: var(--green);
   min-width: 24px;
-  margin-top: 2px;
+  padding-top: 2px;
 }
 .step-title {
   font-size: 15px;
   font-weight: 600;
   color: var(--text);
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 .step-detail {
   font-size: 13px;
   color: var(--text2);
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
-/* LEAK GRID */
-.leak-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 4px;
-}
-.leak-item {
+/* WHAT YOU GET */
+.offer-card {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border2);
   border-radius: 4px;
-  padding: 16px;
+  padding: 28px;
   position: relative;
+  overflow: hidden;
 }
-.leak-item::before {
+.offer-card::before {
   content: '';
   position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: var(--green);
-  border-radius: 2px 0 0 2px;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
 }
-.leak-amount {
-  font-size: 22px;
+.offer-title {
+  font-size: 18px;
   font-weight: 700;
-  color: var(--green);
-  font-variant-numeric: tabular-nums;
-  margin-bottom: 2px;
+  color: var(--text);
+  margin-bottom: 6px;
 }
-.leak-source {
-  font-size: 12px;
+.offer-sub {
+  font-size: 13px;
   color: var(--text2);
-  line-height: 1.4;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.offer-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.offer-list li {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.offer-list li::before {
+  content: '→';
+  color: var(--green);
+  font-family: 'Syne Mono', monospace;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.offer-guarantee {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid rgba(0,232,122,0.2);
+  border-radius: 3px;
+  background: var(--green-dim);
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.offer-guarantee strong {
+  color: var(--green);
+  font-weight: 700;
 }
 
-/* OBJECTION */
+/* OBJECTIONS */
 .objection-box {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 24px;
-  margin-top: 24px;
+  padding: 20px 24px;
+  margin-bottom: 8px;
 }
 .objection-q {
   font-size: 14px;
@@ -410,10 +375,33 @@ body::after {
   line-height: 1.65;
 }
 
+/* BOOKING CTA */
+.booking-section {
+  margin-bottom: 56px;
+  animation: fadeUp 0.8s ease 0.35s both;
+}
+.booking-header {
+  margin-bottom: 28px;
+}
+.booking-title {
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.booking-sub {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+  max-width: 520px;
+}
+
 /* FOOTER */
 .footer {
   border-top: 1px solid var(--border);
-  padding: 24px 0;
+  padding: 24px 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -423,66 +411,24 @@ body::after {
   font-size: 12px;
   color: var(--text3);
 }
-.footer-links {
-  display: flex;
-  gap: 20px;
-  font-size: 12px;
+.footer-note {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
   color: var(--text3);
 }
 
-/* SUCCESS STATE */
-.success-state {
-  display: none;
-  text-align: center;
-  padding: 48px 24px;
-}
-.success-state.active {
-  display: block;
-  animation: fadeUp 0.5s ease both;
-}
-.success-icon { margin-bottom: 16px; }
-.success-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--green);
-  margin-bottom: 8px;
-}
-.success-sub {
-  font-size: 15px;
-  color: var(--text2);
-  margin-bottom: 28px;
-  line-height: 1.6;
-}
-#calendly-container {
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-/* FIELD ERROR */
-.field-error { animation: fadeUp 0.3s ease both; }
-
-/* SCROLL REVEAL */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 @media (max-width: 560px) {
-  .proof-strip { flex-direction: column; }
-  .proof-item { border-right: none; border-bottom: 1px solid var(--border); }
-  .proof-item:last-child { border-bottom: none; }
+  .stat-row { flex-direction: column; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat-item:last-child { border-bottom: none; }
   .leak-grid { grid-template-columns: 1fr; }
-  .form-card { padding: 24px 20px; }
+  .footer { flex-direction: column; gap: 8px; text-align: center; }
 }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="logo">
@@ -494,329 +440,187 @@ body::after {
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-label">Revenue Recovery Audit</div>
+    <div class="hero-eyebrow">&#9632; Revenue Intelligence</div>
     <div class="hero-number" id="counter">$0</div>
-    <div class="hero-number-label">Average monthly after-hours revenue loss · Dental practices</div>
-    <h1 class="hero-headline">Your practice is probably losing somewhere in that range. Let's calculate your exact number.</h1>
-    <p class="hero-sub">15-minute audit. Completely free. We calculate exactly how much you're losing through missed calls, scheduling gaps, and after-hours drop-off — then show you what it would take to recover it.</p>
+    <div class="hero-number-label">Average monthly revenue leak · Solo dental practice</div>
+    <h1 class="hero-headline">
+      Every day your phones go unanswered,<br>
+      <span>that money walks to the practice down the street.</span>
+    </h1>
+    <p class="hero-sub">
+      32% of dental calls go unanswered. 75% of those patients never call back.
+      We calculate your exact number — what you're losing, where it's going, and what it would take to stop it.
+      Free. 15 minutes. No pitch until you've seen the math.
+    </p>
   </div>
 
-  <!-- PROOF STRIP -->
-  <div class="proof-strip reveal">
-    <div class="proof-item">
-      <div class="proof-num">$8K–$18K</div>
-      <div class="proof-label">typical monthly gap</div>
+  <!-- STAT PROOF -->
+  <div class="stat-row">
+    <div class="stat-item">
+      <div class="stat-num">32%</div>
+      <div class="stat-label">of dental calls go unanswered</div>
     </div>
-    <div class="proof-item">
-      <div class="proof-num">15 min</div>
-      <div class="proof-label">audit duration</div>
+    <div class="stat-item">
+      <div class="stat-num">75%</div>
+      <div class="stat-label">never call that practice back</div>
     </div>
-    <div class="proof-item">
-      <div class="proof-num">$0</div>
-      <div class="proof-label">cost to find out</div>
-    </div>
-  </div>
-
-  <!-- FORM -->
-  <form class="form-card reveal" id="form-section" onsubmit="event.preventDefault(); submitForm();" novalidate>
-    <div class="form-title">Get your revenue leak number</div>
-    <div class="form-sub">// 3 fields. 15-minute call. Your actual number.</div>
-    <div class="form-fields">
-      <div>
-        <label class="field-label" for="f-name">Your name</label>
-        <input class="field-input" type="text" id="f-name" placeholder="Dr. Sarah Chen" autocomplete="name" required>
-      </div>
-      <div>
-        <label class="field-label" for="f-practice">Practice name</label>
-        <input class="field-input" type="text" id="f-practice" placeholder="Sunrise Dental Group" autocomplete="organization" required>
-      </div>
-      <div>
-        <label class="field-label" for="f-email">Email</label>
-        <input class="field-input" type="email" id="f-email" placeholder="sarah@sunrisedental.com" autocomplete="email" required>
-      </div>
-    </div>
-    <button type="submit" class="submit-btn">Calculate My Revenue Leak — Free →</button>
-    <div class="form-guarantee">Free audit · No obligation · No pitch attached to the call</div>
-  </form>
-
-  <!-- SUCCESS STATE -->
-  <div class="success-state" id="success-state" aria-live="polite">
-    <div class="success-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="#00E87A" stroke-width="2"/><path d="M14 24l7 7 13-13" stroke="#00E87A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="success-title">You're in.</div>
-    <div class="success-sub">I'll send your estimated leak range within the hour. Book the 15-minute call below — pick any time that works.</div>
-    <div id="calendly-container"></div>
-    <div id="booking-fallback">
-      <a href="mailto:eric@trynightleak.com?subject=Audit%20Request&body=Practice%20name%3A%0AYour%20name%3A%0ABest%20time%20to%20talk%3A" class="submit-btn" style="display:inline-block;text-decoration:none;text-align:center;max-width:400px;margin:0 auto;">Email me to book your 15-min call →</a>
+    <div class="stat-item">
+      <div class="stat-num">$1,100</div>
+      <div class="stat-label">avg value of a missed new patient</div>
     </div>
   </div>
 
-  <!-- WHAT THE AUDIT COVERS -->
-  <div class="section reveal">
-    <div class="section-label">What the audit covers</div>
+  <!-- BOOKING -->
+  <div class="booking-section">
+    <div class="booking-header">
+      <div class="section-label">Book your free audit</div>
+      <h2 class="booking-title">15 minutes. Your exact number. Nothing to prepare.</h2>
+      <p class="booking-sub">We calculate your practice's specific monthly revenue leak on the call — missed calls, no-shows, inactive patients. You leave knowing the number. Then you decide what to do with it.</p>
+    </div>
+    <div id="cal-booking" style="width:100%;height:680px;overflow:scroll;"></div>
+    <script type="text/javascript">
+      (function (C, A, L) {
+        let p = function (a, ar) { a.q.push(ar); };
+        let d = C.document;
+        C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, [L, namespace, ar[2]]); } else { p(cal, ar); } return; } p(cal, ar); };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+      Cal("init", "30min", { origin: "https://cal.com" });
+      Cal.ns["30min"]("inline", {
+        elementOrSelector: "#cal-booking",
+        calLink: "mytai/30min",
+        layout: "month_view",
+      });
+      Cal.ns["30min"]("ui", { hideEventTypeDetails: false, layout: "month_view" });
+    </script>
+  </div>
+
+  <!-- WHERE THE MONEY GOES -->
+  <div class="section">
+    <div class="section-label">Where your practice leaks</div>
     <div class="leak-grid">
       <div class="leak-item">
-        <div class="leak-amount">$4,200</div>
-        <div class="leak-source">After-hours missed calls that go to voicemail and never call back</div>
+        <div class="leak-amount">$6,200+</div>
+        <div class="leak-source">Missed calls during chair time — staff can't answer phones while treating patients</div>
       </div>
       <div class="leak-item">
-        <div class="leak-amount">$3,800</div>
-        <div class="leak-source">Scheduling yield — open chair time that isn't filled</div>
+        <div class="leak-amount">$4,300+</div>
+        <div class="leak-source">No-shows and same-day cancellations — chair sits empty, overhead runs anyway</div>
       </div>
       <div class="leak-item">
-        <div class="leak-amount">$3,100</div>
-        <div class="leak-source">No-show and same-day cancellation production loss</div>
+        <div class="leak-amount">$3,800+</div>
+        <div class="leak-source">After-hours calls that go to voicemail — patients call the next practice instead</div>
       </div>
       <div class="leak-item">
-        <div class="leak-amount">$3,100</div>
-        <div class="leak-source">Front desk bandwidth limits on inbound calls during peak hours</div>
+        <div class="leak-amount">$2,800+</div>
+        <div class="leak-source">Inactive patients — 300–600 people in your database who haven't been contacted in 18 months</div>
       </div>
     </div>
-    <div style="font-family:'Syne Mono',monospace;font-size:11px;color:var(--text3);margin-top:12px;text-align:center">
-      Based on averages across 40+ practice audits. Your number will differ — that's what the audit is for.
-    </div>
+    <div class="leak-note">Estimates based on industry benchmarks. Your actual number will differ — that's what the audit is for.</div>
   </div>
 
   <!-- HOW IT WORKS -->
-  <div class="section reveal">
+  <div class="section">
     <div class="section-label">How this works</div>
     <div class="steps">
       <div class="step">
         <div class="step-num">01</div>
         <div class="step-body">
-          <div class="step-title">You fill out 3 fields above</div>
-          <div class="step-detail">Name, practice, email. That's all I need to send you an estimated range before the call.</div>
+          <div class="step-title">Book the 15-minute call</div>
+          <div class="step-detail">No prep required. Pick a time above and show up. That's it.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">02</div>
         <div class="step-body">
-          <div class="step-title">You book a 15-minute call</div>
-          <div class="step-detail">The embed appears immediately after you submit. Pick a time that works. No prep required on your end.</div>
+          <div class="step-title">We ask five questions</div>
+          <div class="step-detail">Call volume, no-show rate, approximate inactive patient count, review count, after-hours setup. Takes under 5 minutes.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">03</div>
         <div class="step-body">
-          <div class="step-title">I calculate your actual number</div>
-          <div class="step-detail">On the call I ask 4-5 questions about your call volume and scheduling. We do the math together. You leave knowing the exact figure.</div>
+          <div class="step-title">We calculate your number live</div>
+          <div class="step-detail">We run the audit on the call together. You see the math. You get a specific monthly dollar figure — not a range, not an estimate. Your practice's number.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">04</div>
         <div class="step-body">
-          <div class="step-title">You decide what to do with it</div>
-          <div class="step-detail">If the number is significant, I'll explain what it would take to recover it. If it's small, I'll tell you that too. No pressure, no pitch.</div>
+          <div class="step-title">You decide what to do</div>
+          <div class="step-detail">If the number is significant and you want help recovering it, I'll explain what that looks like. If it's small, I'll tell you that. No pitch, no pressure. The audit is the product.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- FAQ -->
-  <div class="section reveal">
+  <!-- THE OFFER -->
+  <div class="section">
+    <div class="section-label">If you want to fix it</div>
+    <div class="offer-card">
+      <div class="offer-title">30-day pilot. $0 to start.</div>
+      <div class="offer-sub">If you want to recover the revenue we find, here's what we do: set everything up in 5 days, run the full system for 30 days completely free. At the end of the month, you get a report showing exactly what was recovered.</div>
+      <ul class="offer-list">
+        <li>AI answering every call after hours and during chair time — no more voicemail</li>
+        <li>Automatic SMS to every missed call within 60 seconds</li>
+        <li>3-touch no-show sequence: 48hr, 24hr, 2hr before the appointment</li>
+        <li>Monthly reactivation campaign to inactive patients in your database</li>
+        <li>Monthly report: calls handled, appointments booked, revenue recovered</li>
+      </ul>
+      <div class="offer-guarantee">
+        <strong>The guarantee:</strong> If we don't book at least 3 verified new patients in your first 30 days, month two is also free. No questions. No fine print. We only win when you do.
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJECTIONS -->
+  <div class="section">
     <div class="section-label">Common questions</div>
     <div class="objection-box">
       <div class="objection-q">Is this actually free?</div>
-      <div class="objection-a">Yes. The audit is free. If the number is significant and you want help recovering it, we can talk about what that looks like. There's no pitch on the audit call — just your number.</div>
+      <div class="objection-a">The audit is free. If the number is meaningful and you want help recovering it, the first 30 days of the system are also free. Month two onwards is $1,200/month, month-to-month, cancel anytime. No contract.</div>
     </div>
-    <div class="objection-box" style="margin-top:8px">
-      <div class="objection-q">We already have an answering service.</div>
-      <div class="objection-a">Then the gap is probably somewhere else — scheduling yield, no-show patterns, or front desk capacity during peak hours. The audit covers all four areas, not just after-hours calls.</div>
+    <div class="objection-box">
+      <div class="objection-q">We already use Weave.</div>
+      <div class="objection-a">Weave is a phone system. NightLeak is a revenue recovery operation. We handle what Weave leaves on the table — after-hours AI answering, proactive reactivation, no-show sequences, and outcome reporting. Most practices run both.</div>
     </div>
-    <div class="objection-box" style="margin-top:8px">
-      <div class="objection-q">How long before I see the results?</div>
-      <div class="objection-a">The audit itself is 15 minutes. If you decide to work together to recover the revenue, most practices see measurable difference in 30-60 days depending on which gaps we're addressing.</div>
+    <div class="objection-box">
+      <div class="objection-q">How is this different from a marketing agency?</div>
+      <div class="objection-a">We don't sell impressions, rankings, or clicks. We recover revenue that's already yours — calls that came in and went unanswered, patients in your database who haven't been contacted. The report at the end of the month shows booked appointments, not marketing metrics.</div>
+    </div>
+    <div class="objection-box">
+      <div class="objection-q">My staff is already stretched thin. Will this add more work?</div>
+      <div class="objection-a">The opposite. Setup takes one hour of your time over 5 days. After that it runs without your staff touching it. They'll notice fewer missed calls and fewer no-show scrambles — not more work on their plate.</div>
     </div>
   </div>
 
   <!-- FOOTER -->
   <div class="footer">
-    <div class="footer-logo">NightLeak · trynightleak.com</div>
-    <div class="footer-links">
-      <a href="mailto:eric@trynightleak.com" style="color:inherit;text-decoration:none;">eric@trynightleak.com</a>
-    </div>
+    <div class="footer-logo">NightLeak · Revenue Recovery</div>
+    <div class="footer-note">HIPAA-compliant · No long-term contract · Cancel anytime</div>
   </div>
+
 </div>
 
 <script>
-/* ============================================================
-   CONFIG
-   ============================================================ */
-const FORMSPREE_ID = 'xwvwjevl';
-const CALENDLY_SLUG = 'getprecare/meet';
-
-/* ============================================================
-   COUNTER — IntersectionObserver, fires once
-   ============================================================ */
-function animateCounter(el, start, end, duration, prefix) {
+function animateCounter(el, start, end, duration) {
   let startTime = null;
   const step = (ts) => {
     if (!startTime) startTime = ts;
     const progress = Math.min((ts - startTime) / duration, 1);
     const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = prefix + Math.round(start + (end - start) * ease).toLocaleString();
+    const value = Math.round(start + (end - start) * ease);
+    el.textContent = '$' + value.toLocaleString();
     if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = '$' + end.toLocaleString();
   };
   requestAnimationFrame(step);
 }
 
-const counterEl = document.getElementById('counter');
-let counterFired = false;
-new IntersectionObserver((entries, obs) => {
-  if (entries[0].isIntersecting && !counterFired) {
-    counterFired = true;
-    animateCounter(counterEl, 0, 14200, 1800, '$');
-    obs.disconnect();
-  }
-}, { threshold: 0.3 }).observe(counterEl);
-
-/* ============================================================
-   SCROLL REVEAL — CSS class driven, no inline style conflicts
-   ============================================================ */
-const revealObs = new IntersectionObserver((entries, obs) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      obs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-/* ============================================================
-   FORM
-   ============================================================ */
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-let submitting = false;
-
-function showError(input, msg) {
-  clearError(input);
-  input.style.borderColor = 'var(--red)';
-  const err = document.createElement('div');
-  err.className = 'field-error';
-  err.style.cssText = 'color:var(--red);font-size:11px;font-family:"Syne Mono",monospace;margin-top:4px;';
-  err.textContent = msg;
-  input.parentNode.appendChild(err);
-}
-
-function clearError(input) {
-  input.style.borderColor = '';
-  const prev = input.parentNode.querySelector('.field-error');
-  if (prev) prev.remove();
-}
-
-document.querySelectorAll('.field-input').forEach(input => {
-  input.addEventListener('input', () => clearError(input));
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    animateCounter(document.getElementById('counter'), 0, 14200, 1800);
+  }, 400);
 });
-
-async function submitForm() {
-  if (submitting) return;
-
-  const btn = document.querySelector('#form-section .submit-btn');
-  const nameInput = document.getElementById('f-name');
-  const practiceInput = document.getElementById('f-practice');
-  const emailInput = document.getElementById('f-email');
-  const name = nameInput.value.trim();
-  const practice = practiceInput.value.trim();
-  const email = emailInput.value.trim();
-
-  let valid = true;
-  if (!name) { showError(nameInput, 'Name is required'); valid = false; }
-  if (!practice) { showError(practiceInput, 'Practice name is required'); valid = false; }
-  if (!email) { showError(emailInput, 'Email is required'); valid = false; }
-  else if (!emailRegex.test(email)) { showError(emailInput, 'Please enter a valid email'); valid = false; }
-  if (!valid) return;
-
-  if (localStorage.getItem('nightleak-submitted')) {
-    showSuccess(name);
-    return;
-  }
-
-  submitting = true;
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-  btn.style.opacity = '0.7';
-
-  const payload = { name, practice, email, source: 'nightleak-audit', ts: new Date().toISOString() };
-
-  if (FORMSPREE_ID) {
-    try {
-      const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) throw new Error('fail');
-    } catch(e) {
-      btn.textContent = 'Something went wrong — try again';
-      btn.disabled = false;
-      btn.style.opacity = '1';
-      submitting = false;
-      return;
-    }
-  } else {
-    const body = encodeURIComponent('Name: ' + name + '\nPractice: ' + practice + '\nEmail: ' + email + '\nPage: nightleak-audit');
-    window.location.href = 'mailto:eric@trynightleak.com?subject=' + encodeURIComponent('Audit Request – ' + practice) + '&body=' + body;
-  }
-
-  localStorage.setItem('nightleak-submitted', JSON.stringify(payload));
-  submitting = false;
-  showSuccess(name);
-}
-
-/* ============================================================
-   SUCCESS + CALENDLY
-   ============================================================ */
-let calendlyLoaded = false;
-
-function showSuccess(name) {
-  document.getElementById('form-section').style.display = 'none';
-  document.getElementById('success-state').classList.add('active');
-
-  if (CALENDLY_SLUG && !calendlyLoaded) {
-    calendlyLoaded = true;
-    document.getElementById('booking-fallback').style.display = 'none';
-    const container = document.getElementById('calendly-container');
-    container.style.minWidth = '320px';
-    container.style.height = '660px';
-
-    const calendlyUrl = 'https://calendly.com/' + CALENDLY_SLUG + '?hide_gdpr_banner=1&background_color=111814&text_color=E8F0EB&primary_color=00E87A' + (name ? '&name=' + encodeURIComponent(name) : '');
-
-    function init() {
-      window.Calendly.initInlineWidget({ url: calendlyUrl, parentElement: container });
-    }
-
-    if (window.Calendly) {
-      init();
-    } else {
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://assets.calendly.com/assets/external/widget.css';
-      document.head.appendChild(link);
-
-      var script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
-      script.onload = init;
-      document.head.appendChild(script);
-    }
-  }
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ============================================================
-   RETURN VISITOR — must come AFTER showSuccess is defined
-   ============================================================ */
-(function() {
-  var stored = localStorage.getItem('nightleak-submitted');
-  if (stored) {
-    try {
-      var data = JSON.parse(stored);
-      showSuccess(data.name || '');
-    } catch(e) {
-      localStorage.removeItem('nightleak-submitted');
-    }
-  }
-})();
 </script>
 </body>
 </html>

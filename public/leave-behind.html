@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NightLeak · Leave Behind</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── PRINT LETTER SIZE ── */
+@page {
+  size: letter;
+  margin: 0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 8.5in; height: 11in; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: #fff;
+  color: #141414;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 8.5in;
+  min-height: 11in;
+  padding: 0.55in 0.65in 0.5in;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 3px solid #0d1f38;
+  margin-bottom: 28px;
+}
+.brand-line {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #b5872a;
+}
+.tagline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+/* ── HEADLINE ── */
+.headline-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+.headline-block h1 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 26px;
+  line-height: 1.18;
+  color: #0d1f38;
+  max-width: 420px;
+}
+.headline-block h1 em {
+  font-style: italic;
+  color: #b91c1c;
+}
+.stat-callout {
+  background: #0d1f38;
+  color: #fff;
+  padding: 16px 20px;
+  min-width: 190px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.stat-callout .sc-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 30px;
+  color: #f0c96a;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-callout .sc-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .65;
+  line-height: 1.4;
+}
+
+/* ── INTRO LINE ── */
+.intro {
+  font-size: 12.5px;
+  color: #555;
+  line-height: 1.7;
+  font-weight: 300;
+  border-left: 3px solid #f0c96a;
+  padding-left: 14px;
+  margin-bottom: 22px;
+  max-width: 620px;
+}
+.intro strong { color: #141414; font-weight: 600; }
+
+/* ── LEAK GRID ── */
+.leak-section-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #b91c1c;
+  margin-bottom: 10px;
+}
+.leak-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.leak-item {
+  padding: 13px 16px;
+  background: #f8f6f2;
+  border-left: 3px solid #ddd;
+}
+.leak-item.hot { border-left-color: #b91c1c; }
+.leak-item h4 {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #0d1f38;
+  margin-bottom: 3px;
+  letter-spacing: .01em;
+}
+.leak-item p {
+  font-size: 10.5px;
+  color: #666;
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+/* ── MATH ROW ── */
+.math-strip {
+  background: #0d1f38;
+  color: #fff;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
+}
+.math-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+.math-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 22px;
+  color: #f0c96a;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.math-desc {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .55;
+}
+.math-op {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 20px;
+  color: rgba(255,255,255,.2);
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+.math-equals {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,.12);
+  margin: 0 18px;
+  flex-shrink: 0;
+}
+.math-result {
+  flex-shrink: 0;
+  text-align: center;
+}
+.math-result .math-num { font-size: 28px; }
+.math-note {
+  font-size: 10px;
+  color: rgba(255,255,255,.4);
+  margin-top: 4px;
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* ── BOTTOM SPLIT ── */
+.bottom-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+  align-items: stretch;
+}
+
+/* WHAT WE DO */
+.what-block {
+  background: #f8f6f2;
+  padding: 16px 18px;
+  border-top: 3px solid #0d1f38;
+}
+.block-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #b5872a;
+  margin-bottom: 10px;
+}
+.what-items { list-style: none; }
+.what-items li {
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  color: #333;
+  padding: 6px 0;
+  border-bottom: 1px solid #e8e3db;
+  align-items: flex-start;
+  line-height: 1.4;
+  font-weight: 400;
+}
+.what-items li:last-child { border-bottom: none; }
+.what-items li span {
+  color: #0d1f38;
+  font-weight: 700;
+  font-size: 10px;
+  min-width: 14px;
+  padding-top: 1px;
+}
+
+/* CTA BLOCK */
+.cta-block {
+  background: #0d1f38;
+  color: #fff;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cta-head {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 15px;
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+.cta-head em { font-style: italic; color: #f0c96a; }
+.cta-body {
+  font-size: 11px;
+  color: rgba(255,255,255,.6);
+  line-height: 1.6;
+  font-weight: 300;
+  margin-bottom: 14px;
+  flex: 1;
+}
+.cta-steps {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 12px;
+}
+.cta-step {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,.1);
+  padding: 0 8px;
+}
+.cta-step:last-child { border-right: none; }
+.cs-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 20px;
+  color: #f0c96a;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.cs-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .45;
+}
+
+/* GUARANTEE RIBBON */
+.guarantee-ribbon {
+  background: #fdf6e3;
+  border: 1px solid #e8d49a;
+  border-left: 4px solid #b5872a;
+  padding: 12px 16px;
+  margin-top: 10px;
+  grid-column: 1 / -1;
+}
+.gr-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #b5872a;
+  margin-bottom: 4px;
+}
+.gr-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 10.5px;
+  font-style: italic;
+  color: #333;
+  line-height: 1.55;
+}
+.gr-text strong { font-style: normal; font-weight: 700; }
+
+/* FOOTER */
+.footer {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #e2ddd6;
+  font-size: 9px;
+  color: #aaa;
+  letter-spacing: .06em;
+}
+.footer .f-brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  color: #0d1f38;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.footer .f-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #b5872a;
+  letter-spacing: .1em;
+}
+
+/* SCREEN PREVIEW */
+@media screen {
+  body { background: #e8e4de; }
+  .page {
+    margin: 40px auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  }
+}
+@media print {
+  body { background: #fff; }
+  .page { margin: 0; box-shadow: none; padding: 0.5in 0.6in; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand-line">NIGHTLEAK</div>
+    <div class="tagline">Recovery · Reactivation · Results</div>
+  </div>
+
+  <!-- HEADLINE -->
+  <div class="headline-block">
+    <h1>Most practices lose<br><em>$3,000–$8,000/month</em><br>in production they already earned.</h1>
+    <div class="stat-callout">
+      <div class="sc-num">$3,000</div>
+      <div class="sc-label">recovered per month<br>from just 3 extra<br>bookings per week</div>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    It's not new patients you're missing. It's the revenue already inside your practice — diagnosed treatment that never got scheduled, missed appointments that never came back, and overdue patients who drifted away because <strong>no one followed up consistently.</strong>
+  </div>
+
+  <!-- LEAKS -->
+  <div class="leak-section-label">Where production quietly disappears</div>
+  <div class="leak-grid">
+    <div class="leak-item hot">
+      <h4>Unscheduled Treatment</h4>
+      <p>Patients leave with diagnosed work they said they'd "call back to schedule." Most never do without a prompt.</p>
+    </div>
+    <div class="leak-item hot">
+      <h4>Missed Appointment Drift</h4>
+      <p>One call, no answer, move on. That open chair ran full overhead and produced nothing.</p>
+    </div>
+    <div class="leak-item">
+      <h4>Overdue Recall Patients</h4>
+      <p>They meant to come back. Life got busy. Without a reactivation cadence, they find another practice.</p>
+    </div>
+    <div class="leak-item">
+      <h4>Front Desk Inconsistency</h4>
+      <p>Follow-up that lives in someone's head stops the moment they get busy. That's every afternoon.</p>
+    </div>
+  </div>
+
+  <!-- MATH -->
+  <div class="math-strip">
+    <div class="math-col">
+      <div class="math-num">3</div>
+      <div class="math-desc">Recovered<br>opps / week</div>
+    </div>
+    <div class="math-op">×</div>
+    <div class="math-col">
+      <div class="math-num">$250</div>
+      <div class="math-desc">Avg visit<br>value</div>
+    </div>
+    <div class="math-op">×</div>
+    <div class="math-col">
+      <div class="math-num">4</div>
+      <div class="math-desc">Weeks<br>per month</div>
+    </div>
+    <div class="math-equals"></div>
+    <div class="math-result">
+      <div class="math-num">$3,000</div>
+      <div class="math-desc">Monthly<br>lift</div>
+      <div class="math-note">Conservative. Most practices run higher.</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM SPLIT -->
+  <div class="bottom-split">
+    <div class="what-block">
+      <div class="block-label">What we install</div>
+      <ul class="what-items">
+        <li><span>✓</span>AI Receptionist — answers every call 24/7, books appointments, handles FAQs</li>
+        <li><span>✓</span>Missed Call Recovery — automatic SMS within 60 seconds of every missed call</li>
+        <li><span>✓</span>No-Show Annihilator — 3-touch reminder sequence (48hr, 24hr, 2hr before appointment)</li>
+        <li><span>✓</span>Patient Reactivation Engine — monthly campaign to inactive patients, personalized outreach</li>
+        <li><span>✓</span>Review Accelerator — auto-requests Google review 2 hours post-visit</li>
+        <li><span>✓</span>Monthly Revenue Report — one-page: calls handled, appointments booked, revenue recovered</li>
+      </ul>
+    </div>
+
+    <div class="cta-block">
+      <div class="cta-head">Start with a free<br><em>Revenue Leak Audit.</em><br>No pitch before you have the facts.</div>
+      <div class="cta-body">Fill out a 2-minute practice check and we'll send back a custom audit showing exactly where production is slipping — and what one workflow would do about it. If there's no real opportunity, we'll tell you that too.</div>
+      <div class="cta-steps">
+        <div class="cta-step"><div class="cs-num">01</div><div class="cs-label">2-min check</div></div>
+        <div class="cta-step"><div class="cs-num">02</div><div class="cs-label">Free audit</div></div>
+        <div class="cta-step"><div class="cs-num">03</div><div class="cs-label">Your call</div></div>
+      </div>
+    </div>
+
+    <div class="guarantee-ribbon">
+      <div class="gr-label">Our Guarantee</div>
+      <div class="gr-text">If we don't book at least 3 verified new patients in your first 30-day pilot, month 2 is also free. No questions. No fine print.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="f-brand">NIGHTLEAK</div>
+    <div class="f-contact" style="display:flex;gap:20px;align-items:center">
+      <span style="color:#0d1f38;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:.1em">nightleak.io</span>
+      <span style="color:#aaa">·</span>
+      <span style="color:#555;font-size:10px">eric@nightleak.io</span>
+      <span style="color:#aaa">·</span>
+      <span style="color:#555;font-size:10px">714-623-7422</span>
+    </div>
+    <div style="font-size:9px;color:#b5872a;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em">30-DAY FREE PILOT · $1,200/MO</div>
+  </div>
+
+</div>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const practice = params.get('practice');
+  const leak = params.get('leak');
+
+  // Practice name injection
+  if (practice) {
+    // Replace "Most practices" in the h1 headline
+    const h1 = document.querySelector('.headline-block h1');
+    if (h1) h1.innerHTML = h1.innerHTML.replace('Most practices', practice);
+  }
+
+  // Leak amount injection
+  if (leak) {
+    const leakNum = parseInt(leak, 10);
+    const formatted = '$' + leakNum.toLocaleString();
+
+    // 1. Replace the em tag range in the headline
+    const h1 = document.querySelector('.headline-block h1');
+    if (h1) {
+      const em = h1.querySelector('em');
+      if (em) em.textContent = formatted + '/month';
+    }
+
+    // 2. Update stat callout box
+    const scNum = document.querySelector('.stat-callout .sc-num');
+    const scLabel = document.querySelector('.stat-callout .sc-label');
+    if (scNum) scNum.textContent = formatted;
+    if (scLabel) scLabel.textContent = 'Your estimated\nmonthly leak';
+
+    // 3. Update math strip — reverse-engineer: opps × $250 × 4 weeks = leak
+    // First read the math strip structure, then update .math-num values
+    const opps = Math.round(leakNum / (250 * 4));
+    const mathNums = document.querySelectorAll('.math-col .math-num');
+    if (mathNums.length >= 1) mathNums[0].textContent = opps; // recovered opps/week
+    // $250 and 4 weeks stay static
+    const mathResult = document.querySelector('.math-result .math-num');
+    if (mathResult) mathResult.textContent = formatted;
+  }
+})();
+</script>
+</body>
+</html>

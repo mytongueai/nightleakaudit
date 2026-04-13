@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <pattern id="grid4" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M 54 0 L 0 0 0 54" fill="none" stroke="rgba(0,232,122,0.05)" stroke-width="0.5"/>
+    </pattern>
+    <radialGradient id="amb4" cx="80%" cy="20%" r="50%">
+      <stop offset="0%" stop-color="rgba(0,232,122,0.08)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <linearGradient id="tl4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="35%" stop-color="#00E87A" stop-opacity="0.7"/>
+      <stop offset="65%" stop-color="#00E87A" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="glow4">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1080" fill="#080A09"/>
+  <rect width="1080" height="1080" fill="url(#grid4)"/>
+  <rect width="1080" height="1080" fill="url(#amb4)"/>
+  <rect x="0" y="0" width="1080" height="3" fill="url(#tl4)"/>
+
+  <!-- Logo -->
+  <circle cx="60" cy="60" r="6" fill="#00E87A" filter="url(#glow4)"/>
+  <text x="76" y="67" font-family="'Courier New', monospace" font-size="14" fill="#00E87A" letter-spacing="3">NIGHTLEAK</text>
+  <text x="1020" y="67" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40" text-anchor="end" letter-spacing="2">POST 4 / 4</text>
+
+  <!-- Eyebrow -->
+  <text x="60" y="150" font-family="'Courier New', monospace" font-size="11" fill="#00E87A" letter-spacing="3">HOW TO MAKE THE DECISION — 30 MINUTES</text>
+
+  <!-- Headline -->
+  <text x="60" y="208" font-family="Arial, sans-serif" font-size="36" fill="#E8F0EB" font-weight="800" letter-spacing="-0.8">Your Medicare status.</text>
+  <text x="60" y="252" font-family="Arial, sans-serif" font-size="36" fill="#00E87A" font-weight="800" letter-spacing="-0.8">Decided today.</text>
+
+  <!-- divider -->
+  <rect x="60" y="278" width="960" height="1" fill="#1A2420"/>
+
+  <!-- STEP A -->
+  <rect x="60" y="300" width="960" height="120" rx="3" fill="#111814" stroke="rgba(0,232,122,0.15)" stroke-width="1"/>
+  <rect x="60" y="300" width="3" height="120" fill="#00E87A" rx="1"/>
+  <text x="90" y="334" font-family="'Courier New', monospace" font-size="10" fill="#00E87A" letter-spacing="2">OPTION A — ENROLL</text>
+  <text x="90" y="360" font-family="Arial, sans-serif" font-size="17" fill="#E8F0EB">Apply through CMS PECOS · cms.gov/medicare/provider-enrollment</text>
+  <text x="90" y="384" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">Choose participating or non-participating status.</text>
+  <text x="90" y="406" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">Start billing Medicare Advantage dental benefits for eligible patients.</text>
+
+  <!-- STEP B -->
+  <rect x="60" y="440" width="960" height="130" rx="3" fill="#111814" stroke="rgba(245,166,35,0.15)" stroke-width="1"/>
+  <rect x="60" y="440" width="3" height="130" fill="#F5A623" rx="1"/>
+  <text x="90" y="474" font-family="'Courier New', monospace" font-size="10" fill="#F5A623" letter-spacing="2">OPTION B — OPT OUT</text>
+  <text x="90" y="500" font-family="Arial, sans-serif" font-size="17" fill="#E8F0EB">File affidavit with your MAC within 10 days of first private contract</text>
+  <text x="90" y="524" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">Each Medicare patient signs a private contract before services.</text>
+  <text x="90" y="546" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">ADA sample affidavit: ada.org/resources/practice/legal-and-regulatory</text>
+
+  <!-- STEP C -->
+  <rect x="60" y="590" width="960" height="110" rx="3" fill="#111814" stroke="rgba(255,64,64,0.15)" stroke-width="1"/>
+  <rect x="60" y="590" width="3" height="110" fill="#FF4040" rx="1"/>
+  <text x="90" y="624" font-family="'Courier New', monospace" font-size="10" fill="#FF4040" letter-spacing="2">OPTION C — DO NOTHING</text>
+  <text x="90" y="650" font-family="Arial, sans-serif" font-size="17" fill="#E8F0EB">Not a legal protection.</text>
+  <text x="90" y="674" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">If you treat a covered service: up to $2,000/incident CMS exposure.</text>
+
+  <!-- divider -->
+  <rect x="60" y="726" width="960" height="1" fill="#1A2420"/>
+
+  <!-- Sleep apnea callout -->
+  <rect x="60" y="748" width="960" height="110" rx="3" fill="#0F1511" stroke="#1A2420" stroke-width="1"/>
+  <rect x="60" y="748" width="3" height="110" fill="#00E87A" opacity="0.4"/>
+  <text x="90" y="780" font-family="'Courier New', monospace" font-size="10" fill="#3A4A40" letter-spacing="2">BONUS: SLEEP APNEA REVENUE</text>
+  <text x="90" y="806" font-family="Arial, sans-serif" font-size="16" fill="#E8F0EB">DME enrollment (Form 855S) unlocks Medicare billing for sleep appliances.</text>
+  <text x="90" y="830" font-family="Arial, sans-serif" font-size="14" fill="#7A9080">Each device: $1,800–$2,800. Requires separate supplier application. Physician order required.</text>
+
+  <!-- Bottom CTA area -->
+  <rect x="60" y="892" width="960" height="80" rx="4" fill="#00E87A"/>
+  <text x="540" y="932" font-family="Arial, sans-serif" font-size="22" fill="#080A09" font-weight="800" text-anchor="middle" letter-spacing="-0.5">Need help figuring out which fits your practice?</text>
+  <text x="540" y="960" font-family="'Courier New', monospace" font-size="14" fill="#080A09" text-anchor="middle" letter-spacing="1">nightleakaudit.com/medicare — Free 10-min review</text>
+
+  <!-- Bottom -->
+  <text x="60" y="1044" font-family="'Courier New', monospace" font-size="12" fill="#00E87A" letter-spacing="1">NightLeak · Medicare Intelligence</text>
+  <text x="1020" y="1044" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40" text-anchor="end">Source: CMS · ADA · Milliman 2024</text>
+</svg>

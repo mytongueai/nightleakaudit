@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <pattern id="grid2" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M 54 0 L 0 0 0 54" fill="none" stroke="rgba(0,232,122,0.05)" stroke-width="0.5"/>
+    </pattern>
+    <radialGradient id="amb2" cx="75%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="rgba(245,166,35,0.07)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <linearGradient id="tl2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="35%" stop-color="#00E87A" stop-opacity="0.7"/>
+      <stop offset="65%" stop-color="#00E87A" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1080" fill="#080A09"/>
+  <rect width="1080" height="1080" fill="url(#grid2)"/>
+  <rect width="1080" height="1080" fill="url(#amb2)"/>
+  <rect x="0" y="0" width="1080" height="3" fill="url(#tl2)"/>
+
+  <!-- Logo -->
+  <circle cx="60" cy="60" r="6" fill="#00E87A" filter="url(#glow2)"/>
+  <text x="76" y="67" font-family="'Courier New', monospace" font-size="14" fill="#00E87A" letter-spacing="3">NIGHTLEAK</text>
+  <text x="1020" y="67" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40" text-anchor="end" letter-spacing="2">POST 2 / 4</text>
+
+  <!-- Eyebrow -->
+  <text x="60" y="150" font-family="'Courier New', monospace" font-size="11" fill="#00E87A" letter-spacing="3">THE THREE BOXES</text>
+
+  <!-- Headline -->
+  <text x="60" y="216" font-family="Arial, sans-serif" font-size="38" fill="#E8F0EB" font-weight="800" letter-spacing="-1">There are only 3 Medicare</text>
+  <text x="60" y="262" font-family="Arial, sans-serif" font-size="38" fill="#E8F0EB" font-weight="800" letter-spacing="-1">statuses a dental practice</text>
+  <text x="60" y="308" font-family="Arial, sans-serif" font-size="38" fill="#00E87A" font-weight="800" letter-spacing="-1">can have.</text>
+
+  <!-- divider -->
+  <rect x="60" y="335" width="960" height="1" fill="#1A2420"/>
+
+  <!-- BOX 1: ENROLLED -->
+  <rect x="60" y="360" width="960" height="140" rx="4" fill="#111814" stroke="rgba(0,232,122,0.2)" stroke-width="1"/>
+  <rect x="60" y="360" width="4" height="140" fill="#00E87A" rx="2"/>
+  <!-- Number -->
+  <text x="110" y="418" font-family="'Courier New', monospace" font-size="42" fill="rgba(0,232,122,0.15)" font-weight="800">01</text>
+  <text x="200" y="408" font-family="'Courier New', monospace" font-size="11" fill="#00E87A" letter-spacing="2">ENROLLED</text>
+  <text x="200" y="435" font-family="Arial, sans-serif" font-size="20" fill="#E8F0EB" font-weight="700">Bill MA plans. Capture the revenue.</text>
+  <text x="200" y="459" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">Mandatory filing law applies. You must submit claims for covered services.</text>
+  <rect x="870" y="375" width="130" height="28" rx="2" fill="rgba(0,232,122,0.08)" stroke="rgba(0,232,122,0.2)" stroke-width="1"/>
+  <text x="935" y="394" font-family="'Courier New', monospace" font-size="10" fill="#00E87A" text-anchor="middle" letter-spacing="1">PROTECTED</text>
+
+  <!-- BOX 2: OPT OUT -->
+  <rect x="60" y="520" width="960" height="140" rx="4" fill="#111814" stroke="rgba(245,166,35,0.2)" stroke-width="1"/>
+  <rect x="60" y="520" width="4" height="140" fill="#F5A623" rx="2"/>
+  <text x="110" y="578" font-family="'Courier New', monospace" font-size="42" fill="rgba(245,166,35,0.12)" font-weight="800">02</text>
+  <text x="200" y="568" font-family="'Courier New', monospace" font-size="11" fill="#F5A623" letter-spacing="2">OPTED OUT</text>
+  <text x="200" y="595" font-family="Arial, sans-serif" font-size="20" fill="#E8F0EB" font-weight="700">Fully private. Affidavit on file with your MAC.</text>
+  <text x="200" y="619" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">Patients sign private contracts. Cannot submit to Medicare at all.</text>
+  <rect x="850" y="535" width="150" height="28" rx="2" fill="rgba(245,166,35,0.08)" stroke="rgba(245,166,35,0.2)" stroke-width="1"/>
+  <text x="925" y="554" font-family="'Courier New', monospace" font-size="10" fill="#F5A623" text-anchor="middle" letter-spacing="1">ALSO PROTECTED</text>
+
+  <!-- BOX 3: UNDEFINED -->
+  <rect x="60" y="680" width="960" height="140" rx="4" fill="#111814" stroke="rgba(255,64,64,0.2)" stroke-width="1"/>
+  <rect x="60" y="680" width="4" height="140" fill="#FF4040" rx="2"/>
+  <text x="110" y="738" font-family="'Courier New', monospace" font-size="42" fill="rgba(255,64,64,0.12)" font-weight="800">03</text>
+  <text x="200" y="728" font-family="'Courier New', monospace" font-size="11" fill="#FF4040" letter-spacing="2">UNDEFINED</text>
+  <text x="200" y="755" font-family="Arial, sans-serif" font-size="20" fill="#E8F0EB" font-weight="700">"We just don't deal with Medicare."</text>
+  <text x="200" y="779" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">Not a legal protection. Most dental practices are here. This is the gap.</text>
+  <rect x="840" y="695" width="160" height="28" rx="2" fill="rgba(255,64,64,0.08)" stroke="rgba(255,64,64,0.2)" stroke-width="1"/>
+  <text x="920" y="714" font-family="'Courier New', monospace" font-size="10" fill="#FF4040" text-anchor="middle" letter-spacing="1">EXPOSURE ZONE</text>
+
+  <!-- Bottom line -->
+  <rect x="60" y="860" width="960" height="1" fill="#1A2420"/>
+
+  <!-- Closing line -->
+  <text x="60" y="908" font-family="Arial, sans-serif" font-size="22" fill="#E8F0EB" font-weight="700">Option 3 is where 90%+ of dental offices sit right now.</text>
+  <text x="60" y="944" font-family="Arial, sans-serif" font-size="18" fill="#7A9080">It's not illegal to be undefined — until you treat a covered service.</text>
+  <text x="60" y="972" font-family="Arial, sans-serif" font-size="18" fill="#FF4040" font-weight="700">Then it is.</text>
+
+  <!-- Bottom -->
+  <text x="60" y="1044" font-family="'Courier New', monospace" font-size="12" fill="#00E87A" letter-spacing="1">nightleakaudit.com/medicare</text>
+  <text x="1020" y="1044" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40" text-anchor="end">Free 10-min status review</text>
+</svg>

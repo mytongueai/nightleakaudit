@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Leak Audit — NightLeak</title>
+<meta name="description" content="Calculate exactly how much revenue your dental practice is leaking every month. Free audit. No pitch. Takes 60 seconds.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080A09;
+  --bg2: #0D110E;
+  --surface: #111814;
+  --green: #00E87A;
+  --green-dim: rgba(0,232,122,0.08);
+  --green-glow: rgba(0,232,122,0.15);
+  --text: #E8F0EB;
+  --text2: #7A9080;
+  --text3: #3A4A40;
+  --border: #1A2420;
+  --border2: #243028;
+  --red: #FF4040;
+  --amber: #F5A623;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,232,122,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,232,122,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  animation: scan 4s ease-in-out infinite;
+  z-index: 100;
+  opacity: 0.4;
+}
+@keyframes scan { 0%,100%{top:0;opacity:0} 10%{opacity:0.4} 90%{opacity:0.4} }
+
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* TOPBAR */
+.topbar {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'Syne Mono', monospace;
+  font-size: 14px;
+  color: var(--green);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.status-tag {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* PAGE HEADER */
+.page-header {
+  padding: 56px 0 40px;
+  animation: fadeUp 0.7s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid rgba(0,232,122,0.2);
+  padding: 5px 12px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  background: var(--green-dim);
+}
+
+/* personalized banner — shown only when ?practice= is set */
+.practice-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--green);
+  border-radius: 3px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.practice-banner.visible { display: flex; }
+.practice-banner strong { color: var(--text); font-weight: 600; }
+.practice-banner-icon {
+  font-family: 'Syne Mono', monospace;
+  font-size: 16px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.page-title {
+  font-size: clamp(26px, 4.5vw, 38px);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+}
+.page-title span { color: var(--green); }
+.page-sub {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 560px;
+}
+/* personalized sub — swapped in when ?practice= present */
+.page-sub-generic { display: block; }
+.page-sub-personalized { display: none; }
+
+/* MAIN TWO-COLUMN */
+.audit-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* INPUT PANEL */
+.input-panel { animation: fadeUp 0.7s ease 0.1s both; }
+.panel-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.panel-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+.panel-header {
+  padding: 24px 28px 0;
+  margin-bottom: 4px;
+}
+.panel-title {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 2px;
+}
+.panel-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0 0;
+}
+.inputs-list { padding: 0 28px 28px; }
+
+/* INPUT ROWS */
+.input-row {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+.input-row:last-child { border-bottom: none; }
+.input-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.input-sublabel {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text2);
+  letter-spacing: 0.08em;
+  margin-top: 3px;
+}
+.input-value-badge {
+  font-family: 'Syne Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-align: right;
+  line-height: 1.2;
+}
+.input-value-badge .val-label {
+  display: block;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* SLIDER */
+.slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slider-bounds {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(0,232,122,0.4);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+input[type="range"]:hover::-webkit-slider-thumb {
+  box-shadow: 0 0 16px rgba(0,232,122,0.7);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(0,232,122,0.4);
+  cursor: pointer;
+  border: none;
+  transition: box-shadow 0.15s;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, var(--green) var(--pct, 0%), var(--border2) var(--pct, 0%));
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* NUMBER INPUT */
+.number-input {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  padding: 10px 14px;
+  font-size: 20px;
+  font-family: 'Syne Mono', monospace;
+  font-weight: 700;
+  color: var(--text);
+  outline: none;
+  width: 120px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  text-align: center;
+}
+.number-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(0,232,122,0.08);
+}
+
+/* REVIEW FLAG */
+.review-flag {
+  display: none;
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(245,166,35,0.08);
+  border: 1px solid rgba(245,166,35,0.25);
+  border-radius: 2px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+.review-flag.visible { display: block; }
+
+/* TOGGLE */
+.toggle-wrap { display: flex; gap: 8px; }
+.toggle-btn {
+  flex: 1;
+  padding: 10px 0;
+  font-family: 'Syne Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  background: var(--bg);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.toggle-btn:hover { border-color: var(--green); color: var(--text); }
+.toggle-btn.active {
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* RESULTS PANEL */
+.results-panel {
+  position: sticky;
+  top: 24px;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+.results-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.results-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+.results-title {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 20px;
+}
+.result-lines { display: flex; flex-direction: column; gap: 0; }
+.result-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.result-line:last-child { border-bottom: none; }
+.result-name {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.3;
+  flex: 1;
+}
+.result-amount {
+  font-family: 'Syne Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+.result-amount.has-value { color: var(--red); }
+.result-divider {
+  height: 1px;
+  background: var(--border2);
+  margin: 8px 0;
+}
+
+/* TOTAL */
+.total-block { padding: 20px 0 0; }
+.total-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+.total-number {
+  font-size: clamp(28px, 6vw, 40px);
+  font-weight: 800;
+  color: var(--green);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(0,232,122,0.25);
+  transition: transform 0.15s ease;
+}
+.total-number.bump { transform: scale(1.04); }
+.total-unit {
+  font-family: 'Syne Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 4px;
+}
+.total-caveat {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(0,232,122,0.05);
+  border: 1px solid rgba(0,232,122,0.12);
+  border-radius: 2px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* CTA */
+.cta-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: var(--green);
+  color: var(--bg);
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.cta-btn:hover { box-shadow: 0 0 28px rgba(0,232,122,0.4); }
+.cta-btn:hover::after { transform: translateX(100%); }
+.cta-fallback {
+  text-align: center;
+  margin-top: 8px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+}
+.cta-fallback a {
+  color: var(--text2);
+  text-decoration: underline;
+}
+
+/* SHARE SECTION */
+.share-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.share-title {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+.share-input-wrap { display: flex; gap: 8px; }
+.share-url-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  padding: 9px 12px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text2);
+  outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+  min-width: 0;
+}
+.copy-btn {
+  flex-shrink: 0;
+  padding: 9px 14px;
+  background: var(--green-dim);
+  border: 1px solid rgba(0,232,122,0.25);
+  border-radius: 2px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: var(--green-glow); border-color: rgba(0,232,122,0.5); }
+.copy-btn.copied { background: rgba(0,232,122,0.15); border-color: var(--green); }
+
+/* ─── INTRO OVERLAY ──────────────────────────────────────────────── */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: #040605;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  pointer-events: all;
+}
+#intro-overlay.done {
+  animation: introFadeOut 0.6s ease forwards;
+}
+@keyframes introFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; pointer-events: none; }
+}
+
+.intro-logo {
+  font-family: 'Syne Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: rgba(0,232,122,0.5);
+  margin-bottom: 64px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.intro-logo-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 14px var(--green);
+}
+
+.intro-scene {
+  width: 420px;
+  max-width: calc(100vw - 48px);
+  position: relative;
+}
+
+/* city skyline SVG */
+.intro-skyline {
+  width: 100%;
+  opacity: 0;
+  animation: skyFadeIn 0.8s ease 0.2s forwards;
+  display: block;
+  filter: drop-shadow(0 0 40px rgba(0,10,5,1));
+}
+@keyframes skyFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* phone ring pulse ring */
+.intro-ring-wrap {
+  position: absolute;
+  bottom: 52px;
+  right: 60px;
+  width: 54px;
+  height: 54px;
+  opacity: 0;
+  animation: ringAppear 0.3s ease 1.0s forwards;
+}
+@keyframes ringAppear {
+  to { opacity: 1; }
+}
+.intro-ring-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(0,232,122,0.2);
+  animation: ringPulse 1.2s ease-in-out 1.0s infinite;
+}
+@keyframes ringPulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.intro-ring-inner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  border: 1px solid rgba(0,232,122,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* phone SVG icon */
+.intro-phone-icon {
+  width: 20px;
+  height: 20px;
+  fill: var(--green);
+  animation: phoneshake 0.12s ease 1.1s 4 alternate;
+}
+@keyframes phoneshake {
+  from { transform: rotate(-10deg); }
+  to   { transform: rotate(10deg); }
+}
+
+/* office window glow when phone rings */
+.intro-window-glow {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  background: rgba(0,232,122,0);
+  border-radius: 1px;
+  bottom: 66px;
+  right: 76px;
+  animation: windowLight 0.15s ease 1.05s 4 alternate;
+}
+@keyframes windowLight {
+  from { background: rgba(0,232,122,0); }
+  to   { background: rgba(0,232,122,0.3); box-shadow: 0 0 12px rgba(0,232,122,0.5); }
+}
+
+/* counter block */
+.intro-counter-block {
+  margin-top: 40px;
+  text-align: center;
+  opacity: 0;
+  animation: counterAppear 0.4s ease 1.6s forwards;
+}
+@keyframes counterAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.intro-counter-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.intro-counter-number {
+  font-family: 'Syne Mono', monospace;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 40px rgba(255,64,64,0.3);
+  min-width: 2ch;
+  display: inline-block;
+}
+.intro-counter-unit {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* tagline */
+.intro-tagline {
+  margin-top: 36px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  letter-spacing: 0.08em;
+  text-align: center;
+  line-height: 1.7;
+  max-width: 340px;
+  opacity: 0;
+}
+.intro-tagline.visible {
+  animation: taglineIn 0.6s ease forwards;
+}
+@keyframes taglineIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.intro-tagline em {
+  font-style: normal;
+  color: var(--green);
+}
+
+/* skip hint */
+.intro-skip {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s;
+  opacity: 0;
+  animation: skipFadeIn 0.4s ease 2s forwards;
+}
+.intro-skip:hover { color: var(--text2); }
+@keyframes skipFadeIn { to { opacity: 1; } }
+
+/* MOBILE */
+@media (max-width: 680px) {
+  .audit-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .results-panel {
+    position: static;
+    order: -1;
+  }
+  .page-header { padding: 36px 0 28px; }
+  .panel-header, .inputs-list { padding-left: 20px; padding-right: 20px; }
+  .results-card, .share-card { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── INTRO OVERLAY ─────────────────────────────────────────────── -->
+<div id="intro-overlay" aria-hidden="true">
+
+  <div class="intro-logo">
+    <span class="intro-logo-dot"></span>
+    NIGHTLEAK
+  </div>
+
+  <div class="intro-scene">
+
+    <!-- City skyline SVG — dark cinematic -->
+    <svg class="intro-skyline" viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Sky gradient -->
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#050D0A"/>
+          <stop offset="100%" stop-color="#030807"/>
+        </linearGradient>
+        <linearGradient id="bldgGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0A130F"/>
+          <stop offset="100%" stop-color="#060D09"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Sky BG -->
+      <rect width="420" height="180" fill="url(#sky)"/>
+
+      <!-- Stars -->
+      <circle cx="30" cy="18" r="0.8" fill="rgba(255,255,255,0.35)"/>
+      <circle cx="88" cy="9" r="0.6" fill="rgba(255,255,255,0.25)"/>
+      <circle cx="145" cy="22" r="1" fill="rgba(255,255,255,0.2)"/>
+      <circle cx="200" cy="6" r="0.7" fill="rgba(255,255,255,0.3)"/>
+      <circle cx="260" cy="14" r="0.9" fill="rgba(255,255,255,0.2)"/>
+      <circle cx="330" cy="8" r="0.6" fill="rgba(255,255,255,0.25)"/>
+      <circle cx="390" cy="20" r="0.8" fill="rgba(255,255,255,0.15)"/>
+      <circle cx="60" cy="35" r="0.5" fill="rgba(255,255,255,0.15)"/>
+      <circle cx="310" cy="30" r="0.5" fill="rgba(255,255,255,0.2)"/>
+
+      <!-- Far BG buildings (silhouette) -->
+      <rect x="0"   y="100" width="30"  height="80" fill="#060E0B"/>
+      <rect x="25"  y="85"  width="20"  height="95" fill="#070F0C"/>
+      <rect x="40"  y="95"  width="15"  height="85" fill="#060D0A"/>
+      <rect x="50"  y="75"  width="25"  height="105" fill="#080F0C"/>
+      <rect x="70"  y="90"  width="18"  height="90" fill="#060E0B"/>
+      <rect x="85"  y="70"  width="30"  height="110" fill="#091209"/>
+      <rect x="110" y="80"  width="20"  height="100" fill="#070F0C"/>
+      <rect x="125" y="60"  width="35"  height="120" fill="#0A130F"/>
+      <rect x="155" y="75"  width="22"  height="105" fill="#080F0C"/>
+      <rect x="172" y="88"  width="18"  height="92" fill="#060E0B"/>
+      <rect x="186" y="55"  width="40"  height="125" fill="#0B150F"/>
+      <rect x="220" y="72"  width="28"  height="108" fill="#091209"/>
+      <rect x="243" y="85"  width="16"  height="95" fill="#070F0C"/>
+      <rect x="255" y="65"  width="32"  height="115" fill="#0A130F"/>
+      <rect x="282" y="78"  width="22"  height="102" fill="#080F0C"/>
+      <rect x="298" y="58"  width="38"  height="122" fill="#0B150F"/>
+      <rect x="330" y="82"  width="18"  height="98" fill="#070E0C"/>
+      <rect x="343" y="70"  width="28"  height="110" fill="#091209"/>
+      <rect x="366" y="88"  width="20"  height="92" fill="#060E0B"/>
+      <rect x="380" y="62"  width="40"  height="118" fill="#0A130F"/>
+
+      <!-- Foreground buildings (darker, taller) -->
+      <rect x="0"   y="120" width="45"  height="60" fill="#040A07"/>
+      <rect x="40"  y="105" width="55"  height="75" fill="#050C09"/>
+      <rect x="90"  y="95"  width="35"  height="85" fill="#040A07"/>
+      <rect x="120" y="110" width="50"  height="70" fill="#050C09"/>
+      <rect x="165" y="100" width="40"  height="80" fill="#040A07"/>
+      <rect x="200" y="90"  width="60"  height="90" fill="#050C09"/>
+      <rect x="255" y="108" width="45"  height="72" fill="#040A07"/>
+      <rect x="295" y="95"  width="35"  height="85" fill="#050C09"/>
+      <rect x="325" y="112" width="55"  height="68" fill="#040A07"/>
+      <rect x="375" y="98"  width="45"  height="82" fill="#050C09"/>
+
+      <!-- Main featured building (dental office) — center -->
+      <rect x="165" y="90" width="60" height="90" fill="#050C09"/>
+      <!-- Building grid lines -->
+      <line x1="177" y1="90" x2="177" y2="180" stroke="#060E0B" stroke-width="1"/>
+      <line x1="189" y1="90" x2="189" y2="180" stroke="#060E0B" stroke-width="1"/>
+      <line x1="201" y1="90" x2="201" y2="180" stroke="#060E0B" stroke-width="1"/>
+      <line x1="213" y1="90" x2="213" y2="180" stroke="#060E0B" stroke-width="1"/>
+      <line x1="165" y1="102" x2="225" y2="102" stroke="#060E0B" stroke-width="1"/>
+      <line x1="165" y1="114" x2="225" y2="114" stroke="#060E0B" stroke-width="1"/>
+      <line x1="165" y1="126" x2="225" y2="126" stroke="#060E0B" stroke-width="1"/>
+      <line x1="165" y1="138" x2="225" y2="138" stroke="#060E0B" stroke-width="1"/>
+      <line x1="165" y1="150" x2="225" y2="150" stroke="#060E0B" stroke-width="1"/>
+      <!-- Dark windows (all off) -->
+      <rect x="169" y="93"  width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="181" y="93"  width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="193" y="93"  width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="205" y="93"  width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="217" y="93"  width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="169" y="105" width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="181" y="105" width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="193" y="105" width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="205" y="105" width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="217" y="105" width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="169" y="117" width="7" height="7" rx="0.5" fill="#030807"/>
+      <rect x="181" y="117" width="7" height="7" rx="0.5" fill="#030807"/>
+      <!-- Front desk window — lit amber (someone working late, not the practice) -->
+      <rect x="193" y="117" width="7" height="7" rx="0.5" fill="rgba(245,166,35,0.15)" id="front-desk-win"/>
+      <rect x="205" y="117" width="7" height="7" rx="0.5" fill="#030807" id="target-window"/>
+      <rect x="217" y="117" width="7" height="7" rx="0.5" fill="#030807"/>
+
+      <!-- Ground / road -->
+      <rect x="0" y="172" width="420" height="8" fill="#030605"/>
+      <!-- Street light glow -->
+      <ellipse cx="100" cy="172" rx="30" ry="4" fill="rgba(0,232,122,0.03)"/>
+      <ellipse cx="320" cy="172" rx="30" ry="4" fill="rgba(0,232,122,0.03)"/>
+    </svg>
+
+    <!-- Phone ring on target window -->
+    <div class="intro-ring-wrap" id="intro-ring">
+      <div class="intro-ring-bg"></div>
+      <div class="intro-ring-inner">
+        <!-- Phone SVG icon -->
+        <svg class="intro-phone-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.58a1 1 0 0 1-.25 1.01L6.62 10.79z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Window glow overlay (animates with phone ring) -->
+    <div class="intro-window-glow" id="intro-win-glow"></div>
+
+  </div>
+
+  <!-- Counter -->
+  <div class="intro-counter-block">
+    <div class="intro-counter-label">Calls missed last night</div>
+    <div class="intro-counter-number" id="intro-counter">—</div>
+    <div class="intro-counter-unit">industry average · your practice</div>
+  </div>
+
+  <!-- Tagline -->
+  <div class="intro-tagline" id="intro-tagline">
+    That's the industry average.<br>
+    <em>Here's yours.</em>
+  </div>
+
+  <!-- Skip -->
+  <span class="intro-skip" id="intro-skip" onclick="skipIntro()" role="button" tabindex="0" aria-label="Skip intro">ESC / SKIP</span>
+
+</div>
+
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a href="/" class="logo">
+      <span class="logo-dot"></span>
+      NIGHTLEAK
+    </a>
+    <span class="status-tag">Revenue Intelligence</span>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+
+    <!-- personalized banner: shown only when ?practice= param is present -->
+    <div class="practice-banner" id="practice-banner">
+      <span class="practice-banner-icon">&#9632;</span>
+      <span>We estimated <strong id="practice-name-banner"></strong>'s revenue leak below using publicly available data. Adjust any number that doesn't match your practice — the estimate gets more accurate as you do.</span>
+    </div>
+
+    <div class="page-eyebrow">
+      <span>&#9632;</span> <span id="eyebrow-text">Revenue Leak Calculator</span>
+    </div>
+
+    <h1 class="page-title" id="page-title">
+      How much is your practice<br>
+      <span>leaking every month?</span>
+    </h1>
+
+    <p class="page-sub page-sub-generic" id="sub-generic">
+      Move the sliders to match your practice. Your revenue leak calculates in real time — no email required.
+    </p>
+    <p class="page-sub page-sub-personalized" id="sub-personalized" style="display:none;">
+      These numbers were estimated from your public practice data. Adjust the sliders if anything looks off — the total updates instantly.
+    </p>
+
+  </div>
+
+  <!-- MAIN AUDIT GRID -->
+  <div class="audit-grid">
+
+    <!-- LEFT: INPUTS -->
+    <div class="input-panel">
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title">Practice Inputs</div>
+          <div class="panel-divider"></div>
+        </div>
+        <div class="inputs-list">
+
+          <!-- INPUT 1: Missed Calls -->
+          <div class="input-row">
+            <div class="input-top">
+              <div>
+                <div class="input-label">Missed calls per day</div>
+                <div class="input-sublabel">Calls that go to voicemail or unanswered</div>
+              </div>
+              <div class="input-value-badge">
+                <span id="calls-val">5</span>
+                <span class="val-label">calls/day</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <span class="slider-bounds">1</span>
+              <input type="range" id="calls-slider" min="1" max="20" value="5" aria-label="Missed calls per day">
+              <span class="slider-bounds">20</span>
+            </div>
+          </div>
+
+          <!-- INPUT 2: No-shows -->
+          <div class="input-row">
+            <div class="input-top">
+              <div>
+                <div class="input-label">No-shows / cancellations per week</div>
+                <div class="input-sublabel">Appointments lost with less than 24h notice</div>
+              </div>
+              <div class="input-value-badge">
+                <span id="noshows-val">4</span>
+                <span class="val-label">appts/wk</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <span class="slider-bounds">0</span>
+              <input type="range" id="noshows-slider" min="0" max="15" value="4" aria-label="No-shows and cancellations per week">
+              <span class="slider-bounds">15</span>
+            </div>
+          </div>
+
+          <!-- INPUT 3: Inactive Patients -->
+          <div class="input-row">
+            <div class="input-top">
+              <div>
+                <div class="input-label">Patients overdue for recall (6+ months)</div>
+                <div class="input-sublabel">Patients who haven't scheduled a return visit</div>
+              </div>
+              <div class="input-value-badge">
+                <span id="recall-val">200</span>
+                <span class="val-label">patients</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <span class="slider-bounds">50</span>
+              <input type="range" id="recall-slider" min="50" max="800" value="200" aria-label="Patients overdue for recall">
+              <span class="slider-bounds">800</span>
+            </div>
+          </div>
+
+          <!-- INPUT 4: Reviews -->
+          <div class="input-row">
+            <div class="input-top">
+              <div>
+                <div class="input-label">Online reviews (Google / total)</div>
+                <div class="input-sublabel">Reviews visible to new patients searching online</div>
+              </div>
+              <div>
+                <input type="number" id="reviews-input" class="number-input" min="0" max="9999" value="35" aria-label="Number of online reviews">
+              </div>
+            </div>
+            <div id="review-flag" class="review-flag">
+              &#9650; Fewer than 50 reviews costs the average practice 2–3 new patients per month to competitors. New patients read reviews before calling.
+            </div>
+          </div>
+
+          <!-- INPUT 5: After-hours -->
+          <div class="input-row">
+            <div class="input-top">
+              <div>
+                <div class="input-label">After-hours call coverage</div>
+                <div class="input-sublabel">Live answering or AI coverage outside office hours</div>
+              </div>
+              <div class="toggle-wrap" role="group" aria-label="After-hours call coverage">
+                <button class="toggle-btn" id="afterhours-yes" onclick="setAfterHours('yes')" aria-pressed="false">YES</button>
+                <button class="toggle-btn active" id="afterhours-no" onclick="setAfterHours('no')" aria-pressed="true">NO</button>
+              </div>
+            </div>
+            <div id="afterhours-note" style="display:none;margin-top:10px;font-family:'Syne Mono',monospace;font-size:10px;color:var(--text3);line-height:1.5;">
+              Without coverage, roughly 3 after-hours calls/night go to voicemail. Most don't leave a message. That's ~$600/month in lost scheduling opportunity at a conservative conversion rate.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="results-panel">
+      <div class="results-card">
+        <div class="results-title" id="results-title">Your Revenue Leak</div>
+
+        <div class="result-lines">
+          <div class="result-line">
+            <span class="result-name">Missed call revenue leak</span>
+            <span class="result-amount has-value" id="r-calls">—</span>
+          </div>
+          <div class="result-line">
+            <span class="result-name">No-show &amp; cancellation cost</span>
+            <span class="result-amount has-value" id="r-noshows">—</span>
+          </div>
+          <div class="result-line">
+            <span class="result-name">Inactive patient opportunity</span>
+            <span class="result-amount has-value" id="r-recall">—</span>
+          </div>
+          <div class="result-line">
+            <span class="result-name">After-hours coverage gap</span>
+            <span class="result-amount" id="r-afterhours">—</span>
+          </div>
+        </div>
+
+        <div class="result-divider"></div>
+
+        <div class="total-block">
+          <div class="total-label">Estimated monthly leak</div>
+          <div class="total-number" id="total-number">$0</div>
+          <div class="total-unit">/mo</div>
+          <div class="total-caveat">&#9632; Conservative estimate — most practices we audit come in higher</div>
+        </div>
+
+        <button class="cta-btn" id="cta-btn">
+          Show me what's fixable — 15 min, free &rarr;
+        </button>
+        <div class="cta-fallback">
+          or go directly to <a href="https://cal.com/mytai/30min" target="_blank" rel="noopener">cal.com/mytai/30min</a>
+        </div>
+
+      </div>
+
+      <!-- SHARE -->
+      <div class="share-card">
+        <div class="share-title">Send this audit</div>
+        <div class="share-input-wrap">
+          <input type="text" class="share-url-input" id="share-url" readonly aria-label="Shareable audit URL">
+          <button class="copy-btn" id="copy-btn" onclick="copyShareUrl()">Copy</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+const CAL_LINK = "mytai/30min";
+
+// ─── FORMULAS ──────────────────────────────────────────────────────────────
+const CALLS_DAYS    = 22;    // working days/month
+const CALLS_VALUE   = 180;   // $ per missed-call opportunity (conservative)
+const NOSHOWS_WEEKS = 4.3;   // weeks/month
+const NOSHOWS_VALUE = 280;   // $ per no-show appointment (updated from research: $250-$350 avg)
+const RECALL_RATE   = 0.08;  // 8% reactivation response rate
+const RECALL_VALUE  = 350;   // $ avg reactivation visit
+const AFTERHOURS_MO = 600;   // $ monthly for no after-hours coverage
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let state = {
+  calls:      5,
+  noshows:    4,
+  recall:     200,
+  reviews:    35,
+  afterhours: 'no',
+  practice:   null
+};
+
+// ─── FORMAT ────────────────────────────────────────────────────────────────
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+// ─── RECALCULATE ───────────────────────────────────────────────────────────
+function recalculate() {
+  const callsLeak      = state.calls   * CALLS_DAYS   * CALLS_VALUE;
+  const noshowsLeak    = state.noshows * NOSHOWS_WEEKS * NOSHOWS_VALUE;
+  const recallLeak     = state.recall  * RECALL_RATE  * RECALL_VALUE;
+  const afterhoursLeak = state.afterhours === 'no' ? AFTERHOURS_MO : 0;
+  const total          = callsLeak + noshowsLeak + recallLeak + afterhoursLeak;
+
+  document.getElementById('r-calls').textContent    = fmt(callsLeak)    + '/mo';
+  document.getElementById('r-noshows').textContent  = fmt(noshowsLeak)  + '/mo';
+  document.getElementById('r-recall').textContent   = fmt(recallLeak)   + '/mo';
+
+  const ahEl = document.getElementById('r-afterhours');
+  ahEl.textContent = fmt(afterhoursLeak) + '/mo';
+  ahEl.className   = 'result-amount' + (afterhoursLeak > 0 ? ' has-value' : '');
+
+  // after-hours explainer note
+  document.getElementById('afterhours-note').style.display = state.afterhours === 'no' ? 'block' : 'none';
+
+  // total with bump
+  const totalEl = document.getElementById('total-number');
+  totalEl.textContent = fmt(total);
+  totalEl.classList.remove('bump');
+  void totalEl.offsetWidth;
+  totalEl.classList.add('bump');
+  setTimeout(() => totalEl.classList.remove('bump'), 200);
+
+  // review flag
+  document.getElementById('review-flag').classList.toggle('visible', state.reviews < 50);
+
+  updateShareUrl();
+}
+
+// ─── SLIDER FILL ──────────────────────────────────────────────────────────
+function updateSliderFill(slider) {
+  const min = parseFloat(slider.min) || 0;
+  const max = parseFloat(slider.max) || 100;
+  const pct = ((parseFloat(slider.value) - min) / (max - min)) * 100;
+  slider.style.setProperty('--pct', pct + '%');
+}
+
+// ─── SLIDER WIRING ────────────────────────────────────────────────────────
+function wireSlider(id, stateKey, displayId) {
+  const slider  = document.getElementById(id);
+  const display = document.getElementById(displayId);
+  updateSliderFill(slider);
+  slider.addEventListener('input', function() {
+    state[stateKey] = parseInt(this.value, 10);
+    display.textContent = this.value;
+    updateSliderFill(this);
+    recalculate();
+  });
+}
+
+wireSlider('calls-slider',   'calls',   'calls-val');
+wireSlider('noshows-slider', 'noshows', 'noshows-val');
+wireSlider('recall-slider',  'recall',  'recall-val');
+
+document.getElementById('reviews-input').addEventListener('input', function() {
+  const v = parseInt(this.value, 10);
+  state.reviews = isNaN(v) ? 0 : Math.max(0, v);
+  recalculate();
+});
+
+// ─── AFTER-HOURS TOGGLE ───────────────────────────────────────────────────
+function setAfterHours(val) {
+  state.afterhours = val;
+  document.getElementById('afterhours-yes').classList.toggle('active', val === 'yes');
+  document.getElementById('afterhours-no').classList.toggle('active',  val === 'no');
+  document.getElementById('afterhours-yes').setAttribute('aria-pressed', val === 'yes');
+  document.getElementById('afterhours-no').setAttribute('aria-pressed',  val === 'no');
+  recalculate();
+}
+
+// ─── CTA — Cal.com popup with direct link fallback ────────────────────────
+document.getElementById('cta-btn').addEventListener('click', function() {
+  if (window.Cal && Cal.ns && Cal.ns["30min"]) {
+    Cal.ns["30min"]("modal", { calLink: CAL_LINK, layout: "month_view" });
+  } else {
+    window.open('https://cal.com/' + CAL_LINK, '_blank');
+  }
+});
+
+// ─── SHARE URL ────────────────────────────────────────────────────────────
+function buildShareUrl() {
+  const base   = window.location.href.split('?')[0];
+  const params = new URLSearchParams({
+    calls:      state.calls,
+    noshows:    state.noshows,
+    recall:     state.recall,
+    reviews:    state.reviews,
+    afterhours: state.afterhours
+  });
+  if (state.practice) params.set('practice', state.practice);
+  return base + '?' + params.toString();
+}
+
+function updateShareUrl() {
+  const url = buildShareUrl();
+  document.getElementById('share-url').value = url;
+  try { history.replaceState(null, '', url); } catch(e) {}
+}
+
+function copyShareUrl() {
+  const url = buildShareUrl();
+  const btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => flashCopied(btn));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.cssText = 'position:fixed;opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    flashCopied(btn);
+  }
+}
+
+function flashCopied(btn) {
+  btn.textContent = 'Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+}
+
+// ─── PERSONALIZATION — load practice name, switch copy ────────────────────
+function applyPersonalization(practiceName) {
+  state.practice = practiceName;
+
+  // show banner
+  document.getElementById('practice-name-banner').textContent = practiceName;
+  document.getElementById('practice-banner').classList.add('visible');
+
+  // swap header copy
+  document.getElementById('page-title').innerHTML =
+    'We estimated <span>' + practiceName + '</span>\'s<br>revenue leak below.';
+
+  document.getElementById('sub-generic').style.display = 'none';
+  document.getElementById('sub-personalized').style.display = 'block';
+
+  // swap eyebrow
+  document.getElementById('eyebrow-text').textContent = 'Personalized Revenue Audit';
+
+  // swap results panel title
+  document.getElementById('results-title').textContent = practiceName + ' — Revenue Leak';
+}
+
+// ─── LOAD FROM URL PARAMS ─────────────────────────────────────────────────
+(function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  function clamp(v, mn, mx) { return Math.min(mx, Math.max(mn, v)); }
+
+  if (params.has('practice')) {
+    // decode and sanitize — strip HTML
+    const raw = params.get('practice').replace(/<[^>]*>/g, '').trim();
+    if (raw.length > 0 && raw.length < 120) applyPersonalization(raw);
+  }
+
+  if (params.has('calls')) {
+    const v = clamp(parseInt(params.get('calls'), 10), 1, 20);
+    if (!isNaN(v)) {
+      state.calls = v;
+      const s = document.getElementById('calls-slider');
+      s.value = v;
+      document.getElementById('calls-val').textContent = v;
+      updateSliderFill(s);
+    }
+  }
+
+  if (params.has('noshows')) {
+    const v = clamp(parseInt(params.get('noshows'), 10), 0, 15);
+    if (!isNaN(v)) {
+      state.noshows = v;
+      const s = document.getElementById('noshows-slider');
+      s.value = v;
+      document.getElementById('noshows-val').textContent = v;
+      updateSliderFill(s);
+    }
+  }
+
+  if (params.has('recall')) {
+    const v = clamp(parseInt(params.get('recall'), 10), 50, 800);
+    if (!isNaN(v)) {
+      state.recall = v;
+      const s = document.getElementById('recall-slider');
+      s.value = v;
+      document.getElementById('recall-val').textContent = v;
+      updateSliderFill(s);
+    }
+  }
+
+  if (params.has('reviews')) {
+    const v = parseInt(params.get('reviews'), 10);
+    if (!isNaN(v) && v >= 0) {
+      state.reviews = v;
+      document.getElementById('reviews-input').value = v;
+    }
+  }
+
+  if (params.has('afterhours')) {
+    const v = params.get('afterhours').toLowerCase() === 'yes' ? 'yes' : 'no';
+    setAfterHours(v);
+    return;
+  }
+
+  recalculate();
+})();
+</script>
+
+<!-- ─── INTRO ANIMATION ─────────────────────────────────────────── -->
+<script>
+(function() {
+  var overlay   = document.getElementById('intro-overlay');
+  var counter   = document.getElementById('intro-counter');
+  var tagline   = document.getElementById('intro-tagline');
+  var skip      = document.getElementById('intro-skip');
+  var done      = false;
+
+  function endIntro() {
+    if (done) return;
+    done = true;
+    overlay.classList.add('done');
+    setTimeout(function() {
+      overlay.style.display = 'none';
+      overlay.setAttribute('aria-hidden', 'true');
+    }, 700);
+  }
+
+  // ESC key skip
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') endIntro();
+  });
+
+  // Count up: —  →  1  →  2  →  3  →  4
+  // starts at 1.8s (after ring sequence)
+  var target = 4;
+  var current = 0;
+
+  function tick() {
+    if (current === 0) {
+      counter.textContent = '1';
+      current = 1;
+    } else {
+      counter.textContent = String(current + 1);
+      current++;
+    }
+    // flash red on each tick
+    counter.style.color = '#FF6060';
+    setTimeout(function() { counter.style.color = ''; }, 80);
+
+    if (current < target) {
+      setTimeout(tick, 320);
+    } else {
+      // show tagline after count lands on 4
+      setTimeout(function() {
+        tagline.classList.add('visible');
+      }, 400);
+      // auto-dismiss after tagline reads
+      setTimeout(endIntro, 2000);
+    }
+  }
+
+  // start counter after ring animation (1.8s)
+  setTimeout(function() {
+    counter.textContent = '0';
+    setTimeout(tick, 300);
+  }, 1800);
+
+  window.skipIntro = endIntro;
+})();
+</script>
+
+<!-- Cal.com popup embed -->
+<script type="text/javascript">
+  (function (C, A, L) {
+    let p = function (a, ar) { a.q.push(ar); };
+    let d = C.document;
+    C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, [L, namespace, ar[2]]); } else { p(cal, ar); } return; } p(cal, ar); };
+  })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "30min", { origin: "https://cal.com" });
+  Cal.ns["30min"]("ui", { hideEventTypeDetails: false, layout: "month_view" });
+</script>
+
+</body>
+</html>

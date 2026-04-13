@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Medicare Decision Every Dental Practice Must Make — NightLeak</title>
+<meta name="description" content="98% of Medicare Advantage plans cover routine dental. Your patients have active coverage you're not billing. Find out where your practice stands — free, 10 minutes.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────── */
+:root {
+  --bg:       #080A09;
+  --bg2:      #0D110E;
+  --surf:     #111814;
+  --surf2:    #0E1511;
+  --green:    #00E87A;
+  --green-d:  rgba(0,232,122,0.08);
+  --green-g:  rgba(0,232,122,0.15);
+  --text:     #E8F0EB;
+  --text2:    #9DB8A8;
+  --text3:    #5A7A68;
+  --border:   #1A2420;
+  --border2:  #243028;
+  --red:      #FF4040;
+  --amber:    #F5A623;
+  --amber-d:  rgba(245,166,35,0.09);
+}
+
+/* ── RESET ───────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── ANIMATED INTRO OVERLAY ──────────────── */
+#intro{
+  position:fixed;
+  inset:0;
+  background:#080A09;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,232,122,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,232,122,0.025) 1px, transparent 1px);
+  background-size:60px 60px;
+  background-color:#080A09;
+}
+.intro-top{
+  font-family:'Syne Mono',monospace;
+  font-size:clamp(10px,1.4vw,13px);
+  letter-spacing:0.24em;
+  text-transform:uppercase;
+  color:var(--text3);
+  opacity:0;
+  margin-bottom:40px;
+  animation:introFade 0.5s ease 0.15s forwards;
+}
+#intro-num{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(100px,22vw,200px);
+  font-weight:800;
+  color:var(--green);
+  letter-spacing:-0.05em;
+  line-height:1;
+  text-shadow:0 0 100px rgba(0,232,122,0.4);
+  opacity:0;
+  transition:opacity 0.2s ease;
+  font-variant-numeric:tabular-nums;
+}
+.intro-pct{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(50px,10vw,90px);
+  font-weight:800;
+  color:var(--green);
+  letter-spacing:-0.03em;
+  line-height:1;
+  align-self:flex-start;
+  margin-top:clamp(16px,3vw,32px);
+  opacity:0;
+  transition:opacity 0.2s ease;
+}
+.intro-numrow{
+  display:flex;
+  align-items:baseline;
+  gap:4px;
+}
+.intro-sub{
+  font-family:'Syne Mono',monospace;
+  font-size:clamp(11px,1.6vw,14px);
+  color:var(--text2);
+  letter-spacing:0.1em;
+  text-align:center;
+  margin-top:20px;
+  opacity:0;
+  animation:introFade 0.45s ease forwards;
+}
+.intro-bar{
+  width:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  margin-top:28px;
+}
+@keyframes introFade{to{opacity:1}}
+@keyframes introBarGrow{to{width:min(360px,55vw)}}
+#intro.done{
+  transition:opacity 0.55s ease;
+  opacity:0;
+}
+
+/* ── PAGE BG TEXTURE ─────────────────────── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,232,122,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,232,122,0.025) 1px, transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  z-index:200;opacity:0.5;
+}
+
+/* ── LAYOUT ──────────────────────────────── */
+.wrap{
+  position:relative;z-index:1;
+  max-width:700px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+/* ── TOPBAR ──────────────────────────────── */
+.topbar{
+  border-bottom:1px solid var(--border);
+  padding:18px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  opacity:0;animation:fadeUp 0.6s ease 3.1s forwards;
+}
+.logo{
+  font-family:'Syne Mono',monospace;font-size:14px;
+  color:var(--green);letter-spacing:0.06em;
+  display:flex;align-items:center;gap:9px;
+}
+.logo-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 10px var(--green);
+  animation:blink 2.5s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
+.topbar-right{
+  font-family:'Syne Mono',monospace;font-size:11px;
+  color:var(--text2);letter-spacing:0.08em;text-transform:uppercase;
+}
+
+/* ── HERO ────────────────────────────────── */
+.hero{
+  padding:64px 0 0;
+  opacity:0;animation:fadeUp 0.7s ease 3.2s forwards;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.hero-alert{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne Mono',monospace;font-size:11px;
+  color:var(--amber);letter-spacing:0.18em;text-transform:uppercase;
+  background:var(--amber-d);
+  border:1px solid rgba(245,166,35,0.25);
+  padding:6px 14px;border-radius:2px;
+  margin-bottom:28px;
+}
+.hero-alert-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:blink 1.5s infinite;}
+
+.hero-h1{
+  font-size:clamp(32px,6vw,52px);
+  font-weight:800;line-height:1.08;
+  letter-spacing:-0.03em;
+  color:var(--text);
+  margin-bottom:20px;
+}
+.hero-h1 span{color:var(--green);}
+
+.hero-sub{
+  font-size:17px;color:var(--text2);line-height:1.75;
+  max-width:580px;margin-bottom:0;
+}
+.hero-sub strong{color:var(--text);font-weight:600;}
+
+/* ── STAT ROW ────────────────────────────── */
+.stat-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--border);border-radius:4px;overflow:hidden;
+  margin:32px 0 44px;
+  opacity:0;animation:fadeUp 0.6s ease 3.35s forwards;
+}
+.stat-item{
+  padding:20px 16px;border-right:1px solid var(--border);text-align:center;
+}
+.stat-item:last-child{border-right:none;}
+.stat-n{
+  font-family:'Syne Mono',monospace;font-size:26px;font-weight:700;
+  color:var(--green);margin-bottom:6px;font-variant-numeric:tabular-nums;
+}
+.stat-n.amber{color:var(--amber);}
+.stat-l{
+  font-family:'Syne Mono',monospace;font-size:11px;color:var(--text2);
+  letter-spacing:0.05em;text-transform:uppercase;line-height:1.5;
+}
+
+/* ── PRIMARY CTA (above fold) ────────────── */
+.cta-block{
+  margin-bottom:56px;
+  opacity:0;animation:fadeUp 0.6s ease 3.45s forwards;
+}
+.cta-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--green);color:#080A09;
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  padding:16px 32px;border-radius:3px;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:opacity 0.15s;letter-spacing:0.01em;
+}
+.cta-primary:hover{opacity:0.88;}
+.cta-arrow{font-size:18px;line-height:1;}
+.cta-note{
+  font-family:'Syne Mono',monospace;font-size:12px;color:var(--text2);
+  margin-top:10px;letter-spacing:0.06em;
+}
+
+/* ── SECTION UTILITY ─────────────────────── */
+.section{margin-bottom:60px;}
+.sec-label{
+  font-family:'Syne Mono',monospace;font-size:10px;color:var(--green);
+  letter-spacing:0.22em;text-transform:uppercase;
+  margin-bottom:24px;display:flex;align-items:center;gap:12px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── QUIZ ────────────────────────────────── */
+.quiz-head{font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em;}
+.quiz-sub{font-size:14px;color:var(--text2);margin-bottom:22px;line-height:1.65;}
+
+.quiz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:0;}
+.quiz-opt{
+  display:flex;align-items:center;gap:14px;
+  padding:17px 20px;
+  background:var(--surf);border:1px solid var(--border);border-radius:4px;
+  cursor:pointer;transition:all 0.18s;
+  font-size:14px;color:var(--text2);font-weight:500;
+  -webkit-user-select:none;user-select:none;
+}
+.quiz-opt:hover{border-color:var(--border2);color:var(--text);}
+.quiz-opt.sel-g{border-color:rgba(0,232,122,0.4);background:rgba(0,232,122,0.05);color:var(--text);}
+.quiz-opt.sel-a{border-color:rgba(245,166,35,0.4);background:rgba(245,166,35,0.05);color:var(--text);}
+.quiz-opt.sel-r{border-color:rgba(255,64,64,0.35);background:rgba(255,64,64,0.05);color:var(--text);}
+
+.quiz-radio{
+  width:18px;height:18px;border-radius:50%;border:2px solid var(--text3);
+  flex-shrink:0;position:relative;transition:border-color 0.15s;
+}
+.quiz-opt.sel-g .quiz-radio{border-color:var(--green);}
+.quiz-opt.sel-g .quiz-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--green);}
+.quiz-opt.sel-a .quiz-radio{border-color:var(--amber);}
+.quiz-opt.sel-a .quiz-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--amber);}
+.quiz-opt.sel-r .quiz-radio{border-color:var(--red);}
+.quiz-opt.sel-r .quiz-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--red);}
+
+/* Result panels */
+.result{
+  display:none;margin-top:14px;padding:22px 24px;border-radius:4px;
+  animation:fadeUp 0.35s ease both;
+}
+.result.show{display:block;}
+.result.r-g{background:rgba(0,232,122,0.06);border:1px solid rgba(0,232,122,0.2);}
+.result.r-a{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);}
+.result.r-r{background:rgba(255,64,64,0.05);border:1px solid rgba(255,64,64,0.2);}
+.result-title{font-size:15px;font-weight:700;margin-bottom:8px;}
+.r-g .result-title{color:var(--green);}
+.r-a .result-title{color:var(--amber);}
+.r-r .result-title{color:var(--red);}
+.result-body{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:18px;}
+.result-body strong{color:var(--text);font-weight:600;}
+
+/* CTA button inside result panels */
+.result-cta{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--green);color:#080A09;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  padding:13px 24px;border-radius:3px;
+  cursor:pointer;border:none;
+  transition:opacity 0.15s;letter-spacing:0.01em;
+}
+.result.r-a .result-cta{background:var(--amber);}
+.result.r-r .result-cta{background:var(--red);}
+.result-cta:hover{opacity:0.88;}
+.result-cta-note{
+  display:block;margin-top:9px;
+  font-family:'Syne Mono',monospace;font-size:11px;color:var(--text3);
+  letter-spacing:0.07em;
+}
+
+/* ── REVENUE TABLE ───────────────────────── */
+.rev-card{
+  background:var(--surf);border:1px solid var(--border2);
+  border-radius:4px;padding:28px;position:relative;overflow:hidden;
+}
+.rev-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+}
+.rev-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.rev-sub{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px;}
+.rev-rows{
+  display:flex;flex-direction:column;
+  border:1px solid var(--border);border-radius:3px;overflow:hidden;
+  margin-bottom:18px;
+}
+.rev-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid var(--border);gap:16px;
+}
+.rev-row:last-child{border-bottom:none;}
+.rev-desc{font-size:13px;color:var(--text2);line-height:1.5;}
+.rev-desc small{display:block;font-size:12px;color:var(--text3);margin-top:3px;}
+.rev-val{
+  font-family:'Syne Mono',monospace;font-size:14px;color:var(--green);
+  white-space:nowrap;flex-shrink:0;font-variant-numeric:tabular-nums;
+}
+.rev-note{font-family:'Syne Mono',monospace;font-size:12px;color:var(--text2);line-height:1.7;}
+
+/* ── ORIGIN CARD ─────────────────────────── */
+.origin{
+  background:var(--surf2);border:1px solid var(--border);
+  border-radius:4px;padding:28px;
+}
+.origin-quote{
+  font-size:16px;color:var(--text);line-height:1.85;
+  font-style:italic;margin-bottom:22px;
+  border-left:2px solid var(--green);padding-left:20px;
+}
+.origin-who{display:flex;align-items:center;gap:12px;}
+.origin-av{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--green-d);border:1px solid rgba(0,232,122,0.22);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne Mono',monospace;font-size:13px;color:var(--green);
+  flex-shrink:0;
+}
+.origin-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.origin-role{font-family:'Syne Mono',monospace;font-size:11px;color:var(--text2);letter-spacing:0.07em;}
+
+/* ── BOOKING SECTION ─────────────────────── */
+.book-h{font-size:clamp(22px,4vw,32px);font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-0.02em;}
+.book-sub{font-size:15px;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:22px;}
+.book-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
+.book-list li{display:flex;gap:10px;font-size:14px;color:var(--text2);line-height:1.5;}
+.book-list li::before{content:'→';color:var(--green);font-family:'Syne Mono',monospace;font-size:12px;flex-shrink:0;margin-top:1px;}
+
+/* The big booking CTA */
+.book-cta-wrap{
+  display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+}
+.book-cta{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--green);color:#080A09;
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  padding:18px 36px;border-radius:3px;
+  cursor:pointer;border:none;
+  transition:opacity 0.15s;letter-spacing:0.01em;
+}
+.book-cta:hover{opacity:0.88;}
+.book-cta-note{
+  font-family:'Syne Mono',monospace;font-size:12px;color:var(--text2);
+  letter-spacing:0.06em;
+}
+
+/* ── THREE DECISIONS (reference, below fold) */
+.decisions{display:flex;flex-direction:column;gap:12px;}
+.dec{
+  background:var(--surf);border:1px solid var(--border);
+  border-radius:4px;padding:24px 24px 22px;
+  position:relative;overflow:hidden;
+}
+.dec::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;border-radius:3px 0 0 3px;
+}
+.dec.g::before{background:var(--green);}
+.dec.a::before{background:var(--amber);}
+.dec.r::before{background:var(--red);}
+.dec-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:16px;}
+.dec-lbl{
+  font-family:'Syne Mono',monospace;font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;margin-bottom:5px;
+}
+.dec.g .dec-lbl{color:var(--green);}
+.dec.a .dec-lbl{color:var(--amber);}
+.dec.r .dec-lbl{color:var(--red);}
+.dec-title{font-size:17px;font-weight:700;color:var(--text);}
+.dec-badge{
+  font-family:'Syne Mono',monospace;font-size:10px;
+  padding:4px 10px;border-radius:2px;white-space:nowrap;flex-shrink:0;
+  letter-spacing:0.08em;
+}
+.badge-g{background:var(--green-d);color:var(--green);border:1px solid rgba(0,232,122,0.2);}
+.badge-a{background:var(--amber-d);color:var(--amber);border:1px solid rgba(245,166,35,0.2);}
+.badge-r{background:rgba(255,64,64,0.07);color:var(--red);border:1px solid rgba(255,64,64,0.2);}
+.dec-body{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px;}
+.dec-steps{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.dec-steps li{
+  font-family:'Syne Mono',monospace;font-size:12px;color:var(--text2);
+  display:flex;gap:8px;line-height:1.5;
+}
+.dec.g .dec-steps li::before{content:'→';color:var(--green);}
+.dec.a .dec-steps li::before{content:'→';color:var(--amber);}
+.dec.r .dec-steps li::before{content:'→';color:var(--red);}
+.dec-steps a{color:inherit;opacity:0.75;}
+.dec-steps a:hover{opacity:1;}
+
+/* ── FOOTER ──────────────────────────────── */
+.footer{
+  border-top:1px solid var(--border);padding:24px 0 40px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.footer-l{font-family:'Syne Mono',monospace;font-size:12px;color:var(--text2);}
+.footer-r{font-family:'Syne Mono',monospace;font-size:11px;color:var(--text2);text-align:right;line-height:1.6;}
+
+/* ── MOBILE ──────────────────────────────── */
+@media(max-width:560px){
+  .stat-row{grid-template-columns:1fr;}
+  .stat-item{border-right:none;border-bottom:1px solid var(--border);}
+  .stat-item:last-child{border-bottom:none;}
+  .dec-top{flex-direction:column;gap:8px;}
+  .footer{flex-direction:column;gap:8px;text-align:center;}
+  .footer-r{text-align:center;}
+}
+
+/* ── NPI GATE MODAL ──────────────────────── */
+.npi-overlay{
+  position:fixed;inset:0;
+  background:rgba(8,10,9,0.92);
+  z-index:2000;
+  display:none;align-items:center;justify-content:center;
+  padding:16px;
+}
+.npi-overlay.active{display:flex;}
+.npi-card{
+  background:var(--surf);border:1px solid var(--border2);
+  border-radius:6px;padding:32px;
+  max-width:480px;width:100%;
+  position:relative;
+}
+.npi-close{
+  position:absolute;top:16px;right:16px;
+  background:none;border:none;color:var(--text3);
+  font-size:18px;cursor:pointer;line-height:1;
+  transition:color 0.15s;
+}
+.npi-close:hover{color:var(--text);}
+.npi-step-tag{
+  font-family:'Syne Mono',monospace;font-size:10px;
+  color:var(--green);letter-spacing:0.2em;text-transform:uppercase;
+  margin-bottom:12px;
+}
+.npi-heading{
+  font-size:20px;font-weight:700;color:var(--text);
+  letter-spacing:-0.02em;margin-bottom:8px;
+}
+.npi-sub{
+  font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:20px;
+}
+.npi-fields{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.npi-input{
+  width:100%;padding:13px 16px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:4px;
+  color:var(--text);font-family:'Syne',sans-serif;font-size:14px;
+  outline:none;transition:border-color 0.15s;
+}
+.npi-input:focus{border-color:rgba(0,232,122,0.5);}
+.npi-input.shake{animation:npiShake 0.4s ease;}
+@keyframes npiShake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-7px)}
+  75%{transform:translateX(7px)}
+}
+.npi-dropdown{
+  position:absolute;top:100%;left:0;right:0;
+  background:var(--surf2);border:1px solid var(--border2);
+  border-top:none;border-radius:0 0 4px 4px;
+  max-height:200px;overflow-y:auto;
+  z-index:10;display:none;
+}
+.npi-dropdown.open{display:block;}
+.npi-dropdown-item{
+  padding:10px 16px;cursor:pointer;
+  font-size:13px;color:var(--text2);line-height:1.45;
+  transition:background 0.1s;
+}
+.npi-dropdown-item:hover{background:var(--green-d);color:var(--text);}
+.npi-dropdown-item strong{color:var(--text);font-weight:600;}
+.npi-dropdown-item .npi-city{
+  font-family:'Syne Mono',monospace;font-size:11px;
+  color:var(--text3);margin-left:6px;
+}
+.npi-steps-preview{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:14px 0;border-top:1px solid var(--border);
+  margin-bottom:20px;
+}
+.npi-step-item{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Syne Mono',monospace;font-size:11px;color:var(--text2);
+}
+.npi-step-n{
+  width:18px;height:18px;border-radius:50%;
+  background:var(--green-d);border:1px solid rgba(0,232,122,0.2);
+  color:var(--green);font-size:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.npi-step-sep{
+  font-family:'Syne Mono',monospace;font-size:12px;color:var(--text3);
+}
+.npi-actions{
+  display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.npi-btn-skip{
+  background:transparent;border:1px solid var(--border2);
+  color:var(--text2);font-family:'Syne',sans-serif;font-size:13px;
+  padding:12px 20px;border-radius:3px;cursor:pointer;
+  transition:all 0.15s;
+}
+.npi-btn-skip:hover{border-color:var(--border);color:var(--text);}
+.npi-btn-next{
+  flex:1;background:var(--green);color:#080A09;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  padding:13px 20px;border-radius:3px;border:none;cursor:pointer;
+  transition:opacity 0.15s;
+}
+.npi-btn-next:hover{opacity:0.88;}
+.npi-fine{
+  font-family:'Syne Mono',monospace;font-size:11px;
+  color:var(--text3);letter-spacing:0.06em;
+}
+</style>
+<!-- Calendly popup CSS -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     ANIMATED INTRO OVERLAY
+     ══════════════════════════════════════════ -->
+<div id="intro">
+  <div class="intro-top">NightLeak &nbsp;·&nbsp; Medicare Intelligence</div>
+  <div class="intro-numrow">
+    <span id="intro-num">0</span><span class="intro-pct" id="intro-pct">%</span>
+  </div>
+  <div class="intro-sub" id="intro-sub">of Medicare Advantage plans now cover routine dental</div>
+  <div class="intro-bar" id="intro-bar"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN PAGE
+     ══════════════════════════════════════════ -->
+<div class="wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo"><div class="logo-dot"></div>NIGHTLEAK</div>
+    <div class="topbar-right">Medicare Intelligence &nbsp;·&nbsp; Free Review</div>
+  </div>
+
+  <!-- ── HERO ───────────────────────────────── -->
+  <div class="hero">
+    <div class="hero-alert">
+      <div class="hero-alert-dot"></div>
+      CMS Mandatory Filing · 42 U.S.C. §1395u(b)(3)(B)
+    </div>
+    <h1 class="hero-h1">
+      The Medicare decision<br>
+      every dental practice<br>
+      <span>has to make.</span>
+    </h1>
+    <p class="hero-sub">
+      33 million Americans are on Medicare Advantage.
+      <strong>98% of those plans now include routine dental benefits.</strong>
+      Your patients have active coverage — and your practice needs to know where it stands.
+      Enroll. Opt out. Or stay exposed.
+    </p>
+  </div>
+
+  <!-- STAT ROW -->
+  <div class="stat-row">
+    <div class="stat-item">
+      <div class="stat-n">98%</div>
+      <div class="stat-l">of MA plans cover routine dental</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n">33M+</div>
+      <div class="stat-l">Americans on Medicare Advantage</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n amber">$2,000</div>
+      <div class="stat-l">per-incident CMS penalty if enrolled &amp; not filing</div>
+    </div>
+  </div>
+
+  <!-- PRIMARY CTA — above fold -->
+  <div class="cta-block">
+    <button class="cta-primary" onclick="document.getElementById('quiz-section').scrollIntoView({behavior:'smooth'})">
+      Check your practice status <span class="cta-arrow">↓</span>
+    </button>
+    <div class="cta-note">Free · 10 minutes · No pitch until you've seen your options</div>
+  </div>
+
+  <!-- ── STATUS QUIZ ────────────────────────── -->
+  <div class="section" id="quiz-section">
+    <div class="sec-label">Your status check</div>
+    <div class="quiz-head">Where does your practice stand on Medicare?</div>
+    <div class="quiz-sub">Pick the one that's true today. We'll tell you exactly what it means — and what to do.</div>
+
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="selectQ(this,'g')">
+        <div class="quiz-radio"></div>
+        We are enrolled in Medicare (participating or non-participating)
+      </div>
+      <div class="quiz-opt" onclick="selectQ(this,'a')">
+        <div class="quiz-radio"></div>
+        We formally opted out — affidavit filed with our MAC
+      </div>
+      <div class="quiz-opt" onclick="selectQ(this,'r')">
+        <div class="quiz-radio"></div>
+        We haven't done either — we just don't bill Medicare
+      </div>
+    </div>
+
+    <!-- RESULT: ENROLLED -->
+    <div id="res-g" class="result r-g">
+      <div class="result-title">Enrolled — you have revenue sitting in your patient base right now</div>
+      <div class="result-body">
+        Your patients have active Medicare Advantage dental benefits. <strong>Most enrolled practices aren't capturing them.</strong>
+        The missed revenue is real — cleanings, restorative, sleep appliances — all billable under MA plans your patients are already paying into.
+        There's also a compliance side: the CMS Mandatory Filing Law requires you to submit claims for covered services. Collecting cash without filing is a violation — <strong>up to $2,000 per incident</strong>.
+        A 10-minute review tells you exactly what's slipping through and how to close it.
+      </div>
+      <button class="result-cta" onclick="openNpiGate()">Get My Free Medicare Revenue Review &nbsp;→</button>
+      <span class="result-cta-note">10 minutes · No obligation · We show you the numbers first</span>
+    </div>
+
+    <!-- RESULT: OPTED OUT -->
+    <div id="res-a" class="result r-a">
+      <div class="result-title">Opted out — you're protected, but the math may have changed</div>
+      <div class="result-body">
+        A properly filed affidavit covers you — as long as it's current and every Medicare patient has a signed private contract in place.
+        <strong>Two things shift this decision:</strong> most practices opted out when MA dental coverage was thin. At 98% coverage today, opting back in is worth running the numbers on. Some practices are leaving $20,000–$40,000/year on the table to stay "fully private."
+        A 10-minute call runs the revenue math for your specific patient base so you can make the call with real data.
+      </div>
+      <button class="result-cta" onclick="openNpiGate()">Run the Revenue Math — Free Review &nbsp;→</button>
+      <span class="result-cta-note">10 minutes · No obligation · You keep your decision, we just show you the numbers</span>
+    </div>
+
+    <!-- RESULT: UNDEFINED -->
+    <div id="res-r" class="result r-r">
+      <div class="result-title">Undefined — this is the exposure zone. It's fixable in 30 minutes.</div>
+      <div class="result-body">
+        "We don't deal with Medicare" is not a protected legal status — and it gets riskier every year as MA dental coverage expands.
+        <strong>Right now, your patients almost certainly have active MA dental coverage.</strong> You're leaving that revenue uncollected while carrying unresolved compliance exposure.
+        90% of dental practices are in this exact position. Most don't realize it until a claim audit surfaces it. The fix takes one call.
+      </div>
+      <button class="result-cta" onclick="openNpiGate()">Get My Free Medicare Status Review &nbsp;→</button>
+      <span class="result-cta-note">10 minutes · We map your options · No pressure to do anything</span>
+    </div>
+  </div>
+
+  <!-- ── REVENUE SECTION ────────────────────── -->
+  <div class="section">
+    <div class="sec-label">What enrollment unlocks</div>
+    <div class="rev-card">
+      <div class="rev-title">The MA dental revenue most practices aren't capturing</div>
+      <div class="rev-sub">Medicare Advantage dental benefits exist in your patient base right now. They've been paying premiums for coverage they've never used at your practice. Here's what a typical solo GP can add through proper enrollment.</div>
+      <div class="rev-rows">
+        <div class="rev-row">
+          <div class="rev-desc">
+            Preventive cleanings, exams, X-rays for MA patients
+            <small>2× per year per patient under most MA plans</small>
+          </div>
+          <div class="rev-val">$180–$350/patient</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-desc">
+            Restorative under comprehensive MA plans
+            <small>Fillings, crowns, extractions — plan dependent</small>
+          </div>
+          <div class="rev-val">$500–$2,000/patient</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-desc">
+            Sleep apnea appliances via DME enrollment (E0486)
+            <small>Requires Form 855S · physician order required</small>
+          </div>
+          <div class="rev-val">$1,800–$2,800/device</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-desc">
+            Medically-linked dental services
+            <small>Pre-surgical clearance, ESRD, radiation-linked extractions</small>
+          </div>
+          <div class="rev-val">Varies by case</div>
+        </div>
+      </div>
+      <div class="rev-note">A solo GP with 400 active patients and 15–20% on Medicare Advantage can conservatively add $18,000–$36,000/year in previously uncaptured revenue through proper enrollment.</div>
+    </div>
+  </div>
+
+  <!-- ── ORIGIN ──────────────────────────────── -->
+  <div class="section">
+    <div class="sec-label">Why this exists</div>
+    <div class="origin">
+      <div class="origin-quote">
+        "My father died at 62. Sepsis from infected root canals that went undetected for years. He had Medicare. His dentist wasn't enrolled. The oral-systemic connection was never made — clinically or financially. That gap cost him his life. I'm building tools to close it."
+      </div>
+      <div class="origin-who">
+        <div class="origin-av">E</div>
+        <div>
+          <div class="origin-name">Eric Morin</div>
+          <div class="origin-role">Founder, NightLeak · Health starts from the mouth.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOOKING ─────────────────────────────── -->
+  <div class="section" id="booking">
+    <div class="sec-label">Free 10-minute Medicare review</div>
+    <h2 class="book-h">Know exactly where your practice stands.</h2>
+    <p class="book-sub">We confirm your status, run the revenue math on your patient base, and map the steps forward. No pitch. No obligation. Just clarity — in 10 minutes.</p>
+    <ul class="book-list">
+      <li>Confirm whether you're enrolled, opted out, or undefined</li>
+      <li>Estimate uncaptured MA dental revenue in your patient base</li>
+      <li>Map the steps to enroll or formally opt out</li>
+      <li>Check whether DME enrollment for sleep apnea applies to your practice</li>
+    </ul>
+    <div class="book-cta-wrap">
+      <button class="book-cta" onclick="openNpiGate()">Book My Free Review &nbsp;→</button>
+      <span class="book-cta-note">10 minutes · Free · No obligation</span>
+    </div>
+  </div>
+
+  <!-- ── THE THREE DECISIONS (reference) ───── -->
+  <div class="section">
+    <div class="sec-label">The three paths — reference</div>
+    <div class="decisions">
+
+      <div class="dec g">
+        <div class="dec-top">
+          <div>
+            <div class="dec-lbl">Option A</div>
+            <div class="dec-title">Enroll in Medicare</div>
+          </div>
+          <div class="dec-badge badge-g">Revenue opportunity</div>
+        </div>
+        <div class="dec-body">
+          Participating or non-participating enrollment lets you bill Medicare Advantage dental plans. Your patients' existing coverage starts paying you. The mandatory filing law applies — you must file claims for covered services.
+        </div>
+        <ul class="dec-steps">
+          <li>Apply through CMS PECOS — <a href="https://pecos.cms.hhs.gov" target="_blank" rel="noopener">pecos.cms.hhs.gov</a></li>
+          <li>Choose participating (accept MA rates) or non-participating (bill higher, patient pays difference)</li>
+          <li>Begin billing MA dental benefits · benefit verification required before covered services</li>
+          <li>Sleep apnea appliances require separate DME enrollment (Form 855S)</li>
+        </ul>
+      </div>
+
+      <div class="dec a">
+        <div class="dec-top">
+          <div>
+            <div class="dec-lbl">Option B</div>
+            <div class="dec-title">Formally opt out</div>
+          </div>
+          <div class="dec-badge badge-a">Fully private practice</div>
+        </div>
+        <div class="dec-body">
+          The opt-out affidavit filed with your MAC removes you from Medicare entirely. You and your patients cannot submit claims — but you are protected from mandatory filing requirements. Valid 2 years, auto-renews.
+        </div>
+        <ul class="dec-steps">
+          <li>File affidavit with your MAC within 10 days of first private contract</li>
+          <li>Have each Medicare patient sign a private contract before services</li>
+          <li>Confirm renewal every 2 years — automatic, but verify it's on record</li>
+          <li>ADA sample affidavit — <a href="https://www.ada.org/resources/practice/legal-and-regulatory" target="_blank" rel="noopener">ada.org/resources/practice</a></li>
+        </ul>
+      </div>
+
+      <div class="dec r">
+        <div class="dec-top">
+          <div>
+            <div class="dec-lbl">Option C</div>
+            <div class="dec-title">Stay undefined</div>
+          </div>
+          <div class="dec-badge badge-r">Exposure zone</div>
+        </div>
+        <div class="dec-body">
+          This is not a protected status. As MA dental coverage expands into every zip code, the likelihood of treating a covered service without a formal status increases every year. "I didn't know" is not a defense under CMS rules.
+        </div>
+        <ul class="dec-steps">
+          <li>No protection from mandatory filing penalties ($2,000/incident)</li>
+          <li>Cannot capture MA dental revenue your patients already have</li>
+          <li>Exposure increases as MA enrollment grows year over year</li>
+          <li>This is the current status of most dental practices in the U.S.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-l">NightLeak · Medicare Intelligence</div>
+    <div class="footer-r">
+      Source: Milliman 2024 MA Dental Coverage Report<br>
+      CMS Mandatory Filing Law · 42 U.S.C. §1395u(b)(3)(B)
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+/* ════════════════════════════════════════════
+   INTRO — rolling counter animation
+   ════════════════════════════════════════════ */
+(function () {
+  const TARGET   = 98;
+  const START_MS = 350;
+  const ROLL_MS  = 2050;
+  const SUB_MS   = 2400;
+  const BAR_MS   = 2750;
+  const DONE_MS  = 3050;
+  const HIDE_MS  = 3650;
+
+  const numEl = document.getElementById('intro-num');
+  const pctEl = document.getElementById('intro-pct');
+  const subEl = document.getElementById('intro-sub');
+  const barEl = document.getElementById('intro-bar');
+  const intro  = document.getElementById('intro');
+
+  let rollStart = null;
+
+  function easeOut(t) {
+    return Math.pow(t, 0.35);
+  }
+
+  function rollStep(ts) {
+    if (!rollStart) rollStart = ts;
+    const elapsed = ts - rollStart;
+    const t       = Math.min(elapsed / ROLL_MS, 1);
+    const eased   = easeOut(t);
+    const current = Math.round(eased * TARGET);
+    numEl.textContent = current;
+    if (t < 1) {
+      requestAnimationFrame(rollStep);
+    } else {
+      numEl.textContent = TARGET;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      numEl.style.opacity = '1';
+      pctEl.style.opacity = '1';
+      requestAnimationFrame(rollStep);
+    }, START_MS);
+
+    setTimeout(() => {
+      subEl.style.animation = 'introFade 0.45s ease forwards';
+    }, SUB_MS);
+
+    setTimeout(() => {
+      barEl.style.animation = 'introBarGrow 0.4s cubic-bezier(0.4,0,0.2,1) forwards';
+    }, BAR_MS);
+
+    setTimeout(() => {
+      intro.classList.add('done');
+    }, DONE_MS);
+
+    setTimeout(() => {
+      intro.style.display = 'none';
+    }, HIDE_MS);
+  });
+})();
+
+/* ════════════════════════════════════════════
+   QUIZ LOGIC
+   ════════════════════════════════════════════ */
+function selectQ(el, type) {
+  window._lastQuizType = type; // 'g' enrolled / 'a' opted-out / 'r' undefined
+  document.querySelectorAll('.quiz-opt').forEach(o => {
+    o.classList.remove('sel-g','sel-a','sel-r');
+  });
+  document.querySelectorAll('.result').forEach(r => r.classList.remove('show'));
+
+  el.classList.add('sel-' + type);
+  const res = document.getElementById('res-' + type);
+  res.classList.add('show');
+
+  setTimeout(() => {
+    res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 80);
+}
+
+/* ════════════════════════════════════════════
+   CALENDLY POPUP
+   ════════════════════════════════════════════ */
+function openCalendly() {
+  const base = 'https://calendly.com/getprecare/meet?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=00E87A';
+  const name = window._npiLeadName ? '&name=' + encodeURIComponent(window._npiLeadName) : '';
+  Calendly.initPopupWidget({ url: base + name });
+  return false;
+}
+</script>
+<!-- Calendly popup JS -->
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+<!-- NPI Gate Modal -->
+<div id="npi-modal" class="npi-overlay">
+  <div class="npi-card">
+    <button class="npi-close" onclick="closeNpiGate()" aria-label="Close">&#x2715;</button>
+
+    <div class="npi-step-tag">Step 1 of 2</div>
+    <h3 class="npi-heading">We'll pull your practice profile before the call.</h3>
+    <p class="npi-sub">So we show up already knowing your numbers — not a generic pitch.</p>
+
+    <div class="npi-fields">
+      <div style="position:relative">
+        <input id="npi-name" class="npi-input" type="text"
+          placeholder="Your name or practice name" autocomplete="off"
+          oninput="onNpiNameInput(this.value)" />
+        <div id="npi-dropdown" class="npi-dropdown"></div>
+      </div>
+      <input id="npi-number" class="npi-input" type="text"
+        placeholder="NPI number — fills automatically, or enter manually"
+        maxlength="10" inputmode="numeric" />
+    </div>
+
+    <div class="npi-steps-preview">
+      <span class="npi-step-item"><span class="npi-step-n">1</span>We pull your CMS profile</span>
+      <span class="npi-step-sep">&#x2192;</span>
+      <span class="npi-step-item"><span class="npi-step-n">2</span>We run your revenue estimate</span>
+      <span class="npi-step-sep">&#x2192;</span>
+      <span class="npi-step-item"><span class="npi-step-n">3</span>You pick a time — we show up prepared</span>
+    </div>
+
+    <div class="npi-actions">
+      <button class="npi-btn-skip" onclick="skipNpiGate()">Skip &#x2192;</button>
+      <button class="npi-btn-next" onclick="submitNpiGate()">Next: Book My Time &#x2192;</button>
+    </div>
+    <p class="npi-fine">No spam &middot; No obligation &middot; 10 minutes</p>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════
+   NPI GATE
+   ════════════════════════════════════════════ */
+
+/* ── Data loader ─────────────────────────── */
+let _npiData = null;
+(function loadNpiData() {
+  fetch('/npi-dentists.json')
+    .then(r => r.ok ? r.json() : fetch('/npi-dentists-sample.json').then(r2 => r2.json()))
+    .then(d => { _npiData = d; })
+    .catch(() => {});
+})();
+
+/* ── Open / close ────────────────────────── */
+function openNpiGate() {
+  document.getElementById('npi-modal').classList.add('active');
+  setTimeout(() => document.getElementById('npi-name').focus(), 50);
+}
+function closeNpiGate() {
+  document.getElementById('npi-modal').classList.remove('active');
+  document.getElementById('npi-dropdown').classList.remove('open');
+}
+function skipNpiGate() {
+  closeNpiGate();
+  openCalendly();
+}
+
+/* ── Autocomplete ────────────────────────── */
+let _acTimer = null;
+function onNpiNameInput(val) {
+  clearTimeout(_acTimer);
+  _acTimer = setTimeout(() => runAutocomplete(val), 120);
+}
+function runAutocomplete(val) {
+  const dd = document.getElementById('npi-dropdown');
+  const q  = val.trim().toLowerCase();
+  if (!_npiData || q.length < 2) { dd.classList.remove('open'); return; }
+
+  const matches = [];
+  for (let i = 0; i < _npiData.length && matches.length < 8; i++) {
+    const r = _npiData[i];
+    const haystack = r.n.toLowerCase() + (r.p ? ' ' + r.p.toLowerCase() : '');
+    if (haystack.includes(q)) matches.push(r);
+  }
+  if (!matches.length) { dd.classList.remove('open'); return; }
+
+  dd.innerHTML = matches.map(r => {
+    const safeName = (r.p || r.n).replace(/'/g, '&#39;');
+    const display  = r.p
+      ? '<strong>' + r.p + '</strong> &middot; ' + r.n
+      : '<strong>' + r.n + '</strong>';
+    return '<div class="npi-dropdown-item" onclick="selectNpiRecord(\'' + r.npi + '\',\'' + safeName + '\')">'
+      + display + '<span class="npi-city">' + r.c + ', ' + r.s + '</span>'
+      + '</div>';
+  }).join('');
+  dd.classList.add('open');
+}
+function selectNpiRecord(npi, name) {
+  document.getElementById('npi-name').value   = name;
+  document.getElementById('npi-number').value = npi;
+  document.getElementById('npi-dropdown').classList.remove('open');
+}
+
+/* ── Submit ──────────────────────────────── */
+function submitNpiGate() {
+  const name = document.getElementById('npi-name').value.trim();
+  const npi  = document.getElementById('npi-number').value.trim();
+
+  if (!name) { shakeNpiInput('npi-name'); return; }
+  if (npi && !/^\d{10}$/.test(npi)) { shakeNpiInput('npi-number'); return; }
+
+  window._npiLeadName = name;
+  saveNpiLead({ name, npi: npi || null });
+  closeNpiGate();
+  openCalendly();
+}
+
+function shakeNpiInput(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('shake');
+  void el.offsetWidth;
+  el.classList.add('shake');
+  el.addEventListener('animationend', () => el.classList.remove('shake'), { once: true });
+  el.focus();
+}
+
+/* ── Lead save ───────────────────────────── */
+function saveNpiLead(data) {
+  const lead = {
+    name:        data.name,
+    npi:         data.npi || 'not provided',
+    quiz_status: window._lastQuizType || 'unknown',
+    ts:          new Date().toISOString(),
+    page:        'medicare-decision'
+  };
+
+  try { localStorage.setItem('nl_lead_' + Date.now(), JSON.stringify(lead)); } catch(e) {}
+
+  console.log('%c[NightLeak Lead]', 'color:#00E87A;font-weight:bold', lead);
+
+  const WEBHOOK = ''; // paste Make.com webhook URL here when ready
+  if (WEBHOOK) {
+    fetch(WEBHOOK, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(lead)
+    }).catch(() => {});
+  }
+}
+
+/* ── Overlay click + ESC to close ───────── */
+document.getElementById('npi-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeNpiGate();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeNpiGate();
+});
+</script>
+</body>
+</html>

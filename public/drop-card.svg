@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="600" viewBox="0 0 1050 600">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,232,122,0.055)" stroke-width="0.5"/>
+    </pattern>
+    <radialGradient id="amb" cx="22%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="rgba(0,232,122,0.09)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+    <linearGradient id="topline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="30%" stop-color="#00E87A" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#00E87A" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <linearGradient id="botline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="#1A2420"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <linearGradient id="ctop_g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00E87A" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <linearGradient id="ctop_a" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F5A623" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <linearGradient id="ctop_r" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF4040" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="dotglow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- BG -->
+  <rect width="1050" height="600" fill="#080A09"/>
+  <rect width="1050" height="600" fill="url(#grid)"/>
+  <rect width="1050" height="600" fill="url(#amb)"/>
+  <rect x="0" y="0" width="1050" height="2.5" fill="url(#topline)"/>
+
+  <!-- ═══════════════════════════════════════════
+       LEFT COLUMN  (x: 48–480)
+       ─────────────────────────────────────────── -->
+
+  <!-- Logo -->
+  <circle cx="48" cy="38" r="5" fill="#00E87A" filter="url(#dotglow)"/>
+  <text x="62" y="44" font-family="'Courier New', monospace" font-size="13" fill="#00E87A" letter-spacing="3">NIGHTLEAK</text>
+
+  <!-- Headline -->
+  <text x="48" y="112" font-family="Georgia, serif" font-size="42" fill="#E8F0EB" font-weight="700" letter-spacing="-1">Has your practice</text>
+  <text x="48" y="162" font-family="Georgia, serif" font-size="42" fill="#E8F0EB" font-weight="700" letter-spacing="-1">made the Medicare</text>
+  <text x="48" y="212" font-family="Georgia, serif" font-size="42" fill="#00E87A" font-weight="700" letter-spacing="-1">decision?</text>
+
+  <!-- Sub copy -->
+  <text x="48" y="258" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">98% of Medicare Advantage plans now cover</text>
+  <text x="48" y="278" font-family="Arial, sans-serif" font-size="15" fill="#7A9080">routine dental. Every practice must choose.</text>
+
+  <!-- Divider between copy and CTA block -->
+  <rect x="48" y="304" width="400" height="1" fill="#1A2420"/>
+
+  <!-- The question -->
+  <text x="48" y="338" font-family="Arial, sans-serif" font-size="20" fill="#E8F0EB" font-weight="700">Which box does</text>
+  <text x="48" y="366" font-family="Arial, sans-serif" font-size="20" fill="#00E87A" font-weight="700">your practice check?</text>
+
+  <!-- Stat strip — contained below question -->
+  <rect x="48" y="392" width="400" height="56" rx="3" fill="#0E1612" stroke="#1A2420" stroke-width="1"/>
+  <text x="68" y="416" font-family="'Courier New', monospace" font-size="10" fill="#3A4A40" letter-spacing="1.5">MARKET REALITY · 2024</text>
+  <text x="68" y="436" font-family="Arial, sans-serif" font-size="13" fill="#7A9080">98% MA plans cover dental  ·  33M+ enrollees  ·  Growing every year</text>
+
+  <!-- CTA button -->
+  <rect x="48" y="468" width="220" height="44" rx="3" fill="#00E87A"/>
+  <text x="158" y="496" font-family="Arial, sans-serif" font-size="14" fill="#080A09" font-weight="800" text-anchor="middle" letter-spacing="0.3">Free 10-Min Review</text>
+
+  <!-- URL -->
+  <text x="48" y="557" font-family="'Courier New', monospace" font-size="12" fill="#00E87A" letter-spacing="0.8">nightleakaudit.com/medicare</text>
+
+  <!-- ═══════════════════════════════════════════
+       VERTICAL DIVIDER
+       ─────────────────────────────────────────── -->
+  <rect x="498" y="20" width="1" height="560" fill="#1A2420"/>
+
+  <!-- ═══════════════════════════════════════════
+       RIGHT COLUMN  (x: 522–1008)
+       Cards: y=20 to y=580, height=560 total
+       3 cards, 8px gap each
+       Each card height = (560 - 16) / 3 = 181px
+       ─────────────────────────────────────────── -->
+
+  <!-- CARD A: ENROLL  y=20, h=180 -->
+  <rect x="522" y="20" width="510" height="178" rx="4" fill="#0D1510" stroke="#1A2420" stroke-width="1"/>
+  <rect x="522" y="20" width="4" height="178" fill="#00E87A" rx="2"/>
+  <rect x="522" y="20" width="510" height="2" fill="url(#ctop_g)"/>
+  <!-- Badge -->
+  <rect x="890" y="30" width="122" height="24" rx="2" fill="rgba(0,232,122,0.09)" stroke="rgba(0,232,122,0.22)" stroke-width="1"/>
+  <text x="951" y="47" font-family="'Courier New', monospace" font-size="10" fill="#00E87A" text-anchor="middle" letter-spacing="1.5">REVENUE</text>
+  <!-- Content -->
+  <text x="544" y="60" font-family="'Courier New', monospace" font-size="11" fill="#00E87A" letter-spacing="2">OPTION A</text>
+  <text x="544" y="92" font-family="Arial, sans-serif" font-size="22" fill="#E8F0EB" font-weight="700">Enroll in Medicare</text>
+  <text x="544" y="122" font-family="Arial, sans-serif" font-size="14" fill="#7A9080">Bill MA dental plans. Capture revenue your patients</text>
+  <text x="544" y="142" font-family="Arial, sans-serif" font-size="14" fill="#7A9080">already have. Mandatory filing law applies.</text>
+  <text x="544" y="170" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40">→ Apply via CMS PECOS</text>
+
+  <!-- CARD B: OPT OUT  y=206, h=180 -->
+  <rect x="522" y="206" width="510" height="178" rx="4" fill="#0D1510" stroke="#1A2420" stroke-width="1"/>
+  <rect x="522" y="206" width="4" height="178" fill="#F5A623" rx="2"/>
+  <rect x="522" y="206" width="510" height="2" fill="url(#ctop_a)"/>
+  <!-- Badge -->
+  <rect x="872" y="216" width="140" height="24" rx="2" fill="rgba(245,166,35,0.08)" stroke="rgba(245,166,35,0.22)" stroke-width="1"/>
+  <text x="942" y="233" font-family="'Courier New', monospace" font-size="10" fill="#F5A623" text-anchor="middle" letter-spacing="1.5">FULLY PRIVATE</text>
+  <!-- Content -->
+  <text x="544" y="246" font-family="'Courier New', monospace" font-size="11" fill="#F5A623" letter-spacing="2">OPTION B</text>
+  <text x="544" y="278" font-family="Arial, sans-serif" font-size="22" fill="#E8F0EB" font-weight="700">Formally opt out</text>
+  <text x="544" y="308" font-family="Arial, sans-serif" font-size="14" fill="#7A9080">File affidavit with your MAC. Go fully private.</text>
+  <text x="544" y="328" font-family="Arial, sans-serif" font-size="14" fill="#7A9080">Patients sign private contracts. Valid 2 years.</text>
+  <text x="544" y="356" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40">→ ADA sample affidavit at ada.org</text>
+
+  <!-- CARD C: UNDEFINED  y=392, h=180 -->
+  <rect x="522" y="392" width="510" height="178" rx="4" fill="#0D1510" stroke="#1A2420" stroke-width="1"/>
+  <rect x="522" y="392" width="4" height="178" fill="#FF4040" rx="2"/>
+  <rect x="522" y="392" width="510" height="2" fill="url(#ctop_r)"/>
+  <!-- Badge -->
+  <rect x="858" y="402" width="154" height="24" rx="2" fill="rgba(255,64,64,0.08)" stroke="rgba(255,64,64,0.22)" stroke-width="1"/>
+  <text x="935" y="419" font-family="'Courier New', monospace" font-size="10" fill="#FF4040" text-anchor="middle" letter-spacing="1.5">EXPOSURE ZONE</text>
+  <!-- Content -->
+  <text x="544" y="432" font-family="'Courier New', monospace" font-size="11" fill="#FF4040" letter-spacing="2">OPTION C</text>
+  <text x="544" y="464" font-family="Arial, sans-serif" font-size="22" fill="#E8F0EB" font-weight="700">Stay undefined</text>
+  <text x="544" y="494" font-family="Arial, sans-serif" font-size="14" fill="#7A9080">Not a protected status. Up to $2,000/incident</text>
+  <text x="544" y="514" font-family="Arial, sans-serif" font-size="14" fill="#7A9080">exposure under CMS mandatory filing rules.</text>
+  <text x="544" y="542" font-family="'Courier New', monospace" font-size="11" fill="#3A4A40">→ Where 90%+ of dental offices sit today</text>
+
+  <!-- Bottom divider + source -->
+  <rect x="0" y="578" width="1050" height="1" fill="url(#botline)"/>
+  <text x="1022" y="595" font-family="'Courier New', monospace" font-size="10" fill="#3A4A40" text-anchor="end" letter-spacing="0.3">Milliman 2024 · CMS 42 U.S.C. §1395u(b)(3)(B)</text>
+</svg>
