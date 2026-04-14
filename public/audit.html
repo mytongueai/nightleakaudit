@@ -6,6 +6,14 @@
 <title>Revenue Leak Audit — NightLeak</title>
 <meta name="description" content="Calculate exactly how much revenue your dental practice is leaking every month. Free audit. No pitch. Takes 60 seconds.">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3H3LME223H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-3H3LME223H');
+</script>
 <style>
 :root {
   --bg: #080A09;
@@ -1114,7 +1122,7 @@ input[type="range"]::-webkit-slider-runnable-track {
           Show me what's fixable — 15 min, free &rarr;
         </button>
         <div class="cta-fallback">
-          or go directly to <a href="https://cal.com/mytai/30min" target="_blank" rel="noopener">cal.com/mytai/30min</a>
+          or go directly to <a href="https://cal.com/getprecare/meet" target="_blank" rel="noopener">cal.com/getprecare/meet</a>
         </div>
 
       </div>
@@ -1134,7 +1142,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 <script>
 // ─── CONFIG ────────────────────────────────────────────────────────────────
-const CAL_LINK = "mytai/30min";
+const CAL_LINK = "getprecare/meet";
 
 // ─── FORMULAS ──────────────────────────────────────────────────────────────
 const CALLS_DAYS    = 22;    // working days/month
@@ -1236,10 +1244,16 @@ function setAfterHours(val) {
 
 // ─── CTA — Cal.com popup with direct link fallback ────────────────────────
 document.getElementById('cta-btn').addEventListener('click', function() {
+  const calOpts = { calLink: CAL_LINK, layout: "month_view" };
+  if (state.practice) {
+    calOpts.metadata = { notes: 'Practice: ' + state.practice };
+    calOpts.prefill = { name: state.practice };
+  }
   if (window.Cal && Cal.ns && Cal.ns["30min"]) {
-    Cal.ns["30min"]("modal", { calLink: CAL_LINK, layout: "month_view" });
+    Cal.ns["30min"]("modal", calOpts);
   } else {
-    window.open('https://cal.com/' + CAL_LINK, '_blank');
+    const fallback = 'https://cal.com/' + CAL_LINK + (state.practice ? '?name=' + encodeURIComponent(state.practice) : '');
+    window.open(fallback, '_blank');
   }
 });
 

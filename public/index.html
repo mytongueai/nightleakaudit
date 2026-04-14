@@ -6,6 +6,14 @@
 <title>Your practice is leaking revenue. Here's the exact number.</title>
 <meta name="description" content="32% of dental calls go unanswered. 75% of those patients never call back. Find out how much your practice is losing — free, 15 minutes, no pitch.">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3H3LME223H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-3H3LME223H');
+</script>
 <style>
 :root {
   --bg: #080A09;
@@ -438,16 +446,22 @@ body::after {
     <div class="status-tag">FREE AUDIT · NO PITCH</div>
   </div>
 
+  <!-- PERSONALIZED BANNER (shown only when ?practice= is set) -->
+  <div id="practice-banner" style="display:none;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border2);border-left:3px solid var(--green);border-radius:3px;padding:14px 18px;margin-top:20px;font-size:13px;color:var(--text2);line-height:1.5;">
+    <span style="font-family:'Syne Mono',monospace;font-size:16px;color:var(--green);flex-shrink:0;">&#9632;</span>
+    <span>This audit was prepared for <strong id="practice-name-banner" style="color:var(--text);font-weight:600;"></strong>. Book the 15-minute call to get your exact number.</span>
+  </div>
+
   <!-- HERO -->
   <div class="hero">
     <div class="hero-eyebrow">&#9632; Revenue Intelligence</div>
     <div class="hero-number" id="counter">$0</div>
-    <div class="hero-number-label">Average monthly revenue leak · Solo dental practice</div>
-    <h1 class="hero-headline">
+    <div class="hero-number-label" id="counter-label">Average monthly revenue leak · Solo dental practice</div>
+    <h1 class="hero-headline" id="hero-headline">
       Every day your phones go unanswered,<br>
       <span>that money walks to the practice down the street.</span>
     </h1>
-    <p class="hero-sub">
+    <p class="hero-sub" id="hero-sub">
       32% of dental calls go unanswered. 75% of those patients never call back.
       We calculate your exact number — what you're losing, where it's going, and what it would take to stop it.
       Free. 15 minutes. No pitch until you've seen the math.
@@ -473,9 +487,9 @@ body::after {
   <!-- BOOKING -->
   <div class="booking-section">
     <div class="booking-header">
-      <div class="section-label">Book your free audit</div>
-      <h2 class="booking-title">15 minutes. Your exact number. Nothing to prepare.</h2>
-      <p class="booking-sub">We calculate your practice's specific monthly revenue leak on the call — missed calls, no-shows, inactive patients. You leave knowing the number. Then you decide what to do with it.</p>
+      <div class="section-label" id="booking-label">Book your free audit</div>
+      <h2 class="booking-title" id="booking-title">15 minutes. Your exact number. Nothing to prepare.</h2>
+      <p class="booking-sub" id="booking-sub">We calculate your practice's specific monthly revenue leak on the call — missed calls, no-shows, inactive patients. You leave knowing the number. Then you decide what to do with it.</p>
     </div>
     <div id="cal-booking" style="width:100%;height:680px;overflow:scroll;"></div>
     <script type="text/javascript">
@@ -484,13 +498,25 @@ body::after {
         let d = C.document;
         C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, [L, namespace, ar[2]]); } else { p(cal, ar); } return; } p(cal, ar); };
       })(window, "https://app.cal.com/embed/embed.js", "init");
-      Cal("init", "30min", { origin: "https://cal.com" });
-      Cal.ns["30min"]("inline", {
+      Cal("init", "meet", { origin: "https://cal.com" });
+
+      // Read practice name from URL before embedding
+      var _calPractice = (function() {
+        var p = new URLSearchParams(window.location.search).get('practice');
+        return p ? p.replace(/<[^>]*>/g, '').trim().slice(0, 120) : null;
+      })();
+
+      var _calOpts = {
         elementOrSelector: "#cal-booking",
-        calLink: "mytai/30min",
-        layout: "month_view",
-      });
-      Cal.ns["30min"]("ui", { hideEventTypeDetails: false, layout: "month_view" });
+        calLink: "getprecare/meet",
+        layout: "month_view"
+      };
+      if (_calPractice) {
+        _calOpts.prefill = { name: _calPractice, notes: 'Personalized audit for: ' + _calPractice };
+      }
+
+      Cal.ns["meet"]("inline", _calOpts);
+      Cal.ns["meet"]("ui", { hideEventTypeDetails: false, layout: "month_view" });
     </script>
   </div>
 
@@ -615,6 +641,46 @@ function animateCounter(el, start, end, duration) {
   };
   requestAnimationFrame(step);
 }
+
+// ─── PERSONALIZATION ────────────────────────────────────────────────────────
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var practice = params.get('practice');
+  if (!practice) return;
+
+  // sanitize
+  practice = practice.replace(/<[^>]*>/g, '').trim();
+  if (!practice || practice.length > 120) return;
+
+  // show banner
+  var banner = document.getElementById('practice-banner');
+  if (banner) {
+    document.getElementById('practice-name-banner').textContent = practice;
+    banner.style.display = 'flex';
+  }
+
+  // swap headline
+  var h1 = document.getElementById('hero-headline');
+  if (h1) {
+    h1.innerHTML = 'We ran the numbers on<br><span>' + practice + '.</span>';
+  }
+
+  // swap sub
+  var sub = document.getElementById('hero-sub');
+  if (sub) {
+    sub.textContent = 'Based on publicly available data, we estimated your practice\'s monthly revenue leak. Book the 15-minute call to verify the number — no pitch until you\'ve seen the math.';
+  }
+
+  // swap booking header
+  var bTitle = document.getElementById('booking-title');
+  if (bTitle) bTitle.textContent = practice + ' — pick a time.';
+
+  var bSub = document.getElementById('booking-sub');
+  if (bSub) bSub.textContent = 'This slot is reserved for your practice. We\'ll walk through the estimate live on the call and tell you exactly where the number comes from.';
+
+  var bLabel = document.getElementById('booking-label');
+  if (bLabel) bLabel.textContent = 'Your personalized audit call';
+})();
 
 window.addEventListener('load', () => {
   setTimeout(() => {
