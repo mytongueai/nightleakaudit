@@ -1,0 +1,45 @@
+# NightLeak
+
+> AI-powered revenue recovery for dental practices. We identify and fix the hidden revenue leaks costing solo and small-group dental offices an average of $14,200/month.
+
+## What NightLeak Does
+
+NightLeak audits dental practices for three core revenue leak categories:
+
+1. **Missed Calls** — 32% of dental calls go unanswered. 75% of those patients never call back. NightLeak's AI answering service captures every call 24/7.
+
+2. **No-Shows** — The average dental office loses $3,200/month to no-shows. NightLeak's automated SMS sequences reduce no-show rates by confirming, reminding, and recovering appointments.
+
+3. **Inactive Patients** — Most practices have 400–800 patients overdue for recall. NightLeak's reactivation campaigns recover 3–8 patients per month on autopilot.
+
+## Core Offer
+
+- Free 15-minute revenue leak audit (no pitch until you see the math)
+- 30-day free pilot: AI answering + SMS recovery + patient reactivation
+- Guarantee: 3+ new verified patients in 30 days or month 2 is free
+
+## Medicare Advantage Tool
+
+NightLeak also provides a free decision tool for dental practices evaluating Medicare Advantage participation. 98% of Medicare Advantage plans now include routine dental coverage, representing significant uncaptured revenue for most practices.
+
+## Target Audience
+
+Solo and small-group dental practices in the United States, particularly those experiencing:
+- High call abandonment rates
+- No-show rates above 5%
+- Large inactive patient lists (patients not seen in 18+ months)
+- Interest in Medicare Advantage dental billing
+
+## Key Statistics
+
+- Average solo dental practice loses $14,200/month to revenue leaks
+- 32% of dental calls go unanswered
+- 75% of callers who don't reach a dental office never call back
+- $3,200/month average no-show cost per practice
+- 98% of Medicare Advantage plans cover routine dental
+
+## Contact & Booking
+
+Dental practices can book a free audit at: https://nightleakaudit.com
+Revenue calculator tool: https://nightleakaudit.com/audit
+Medicare decision tool: https://nightleakaudit.com/medicare
