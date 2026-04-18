@@ -5,7 +5,7 @@
 
 ### We called 34 dental practices after 5pm. Here's what happened.
 
-**97% of dental offices we called after hours had no live person answer the phone.**
+**Not a single dental office we called after hours had a live person answer the phone.**
 
 Between April 15-17, 2026, NightLeak called 34 dental practices across California and New York after business hours. We weren't selling anything. We called as a patient would — looking for help.
 
@@ -17,12 +17,12 @@ Between April 15-17, 2026, NightLeak called 34 dental practices across Californi
 |--------|--------|
 | Practices called | 34 |
 | Went to voicemail | 28 (82%) |
-| Hit a phone tree / IVR | 5 (15%) |
-| Answered by a live person | 1 (3%) |
+| Hit a phone tree / IVR | 6 (18%) |
+| Answered by a live person | 0 (0%) |
 | Offered online booking | 0 (0%) |
 | Offered a callback option | 6 (18%) |
 
-**Only 1 out of 34 practices had a human answer the phone after 5pm.**
+**Zero out of 34 practices had a human answer the phone after 5pm.**
 
 ---
 
@@ -62,7 +62,7 @@ Most voicemails gave no useful next step. No website. No booking link. No callba
 |------|--------|-----------|------|-----|
 | New York, NY | 5 | 4 (80%) | 0 | 1 |
 | San Jose, CA | 4 | 3 (75%) | 0 | 1 |
-| Los Angeles, CA | 1 | 0 | 1 | 0 |
+| Los Angeles, CA | 1 | 0 | 0 | 1 |
 | Roseville, CA | 1 | 1 (100%) | 0 | 0 |
 | Sacramento, CA | 1 | 1 (100%) | 0 | 0 |
 | San Francisco, CA | 1 | 1 (100%) | 0 | 0 |
@@ -75,7 +75,7 @@ Most voicemails gave no useful next step. No website. No booking link. No callba
 1. **No practice offered online booking during their after-hours message.** Not one.
 2. **Only 18% mentioned a callback option.** The rest said "leave a message" and nothing else.
 3. **82% of calls hit a dead-end voicemail.** No routing, no alternative, no way for the patient to self-serve.
-4. **The one practice that answered live was in Los Angeles.** Every other practice — including major metro areas like San Jose, NYC, San Francisco, and Sacramento — went dark after 5pm.
+4. **Every metro went dark.** Los Angeles, San Jose, NYC, San Francisco, Sacramento — not a single practice in any city had a live person answer after 5pm.
 
 ---
 

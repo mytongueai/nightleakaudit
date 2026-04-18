@@ -49,7 +49,7 @@ style: |
 
 # We called 34 dental offices after 5pm.
 
-**One person answered.**
+**Nobody answered.**
 
 *NightLeak After-Hours Audit Report | April 2026*
 
@@ -70,10 +70,10 @@ No sales pitch. No agenda. Just: **"Is anyone there?"**
 | What Happened | Count | % |
 |--------------|-------|---|
 | **Voicemail** | 28 | 82% |
-| **Phone Tree / IVR** | 5 | 15% |
-| **Live Person** | 1 | **3%** |
+| **Phone Tree / IVR** | 6 | 18% |
+| **Live Person** | 0 | **0%** |
 
-**97% of dental offices had no live person answer after 5pm.**
+**Not a single dental office had a live person answer after 5pm.**
 
 ---
 
@@ -81,7 +81,7 @@ No sales pitch. No agenda. Just: **"Is anyone there?"**
 
 | Feature | Offered? |
 |---------|----------|
-| Live person | 1 out of 34 |
+| Live person | **0 out of 34** |
 | Online booking | **0 out of 34** |
 | Callback option | 6 out of 34 |
 | Text option | 0 out of 34 |
@@ -136,12 +136,13 @@ Most voicemails gave no useful next step.
 |------|--------|-----------|------|
 | New York, NY | 5 | 4 (80%) | 0 |
 | San Jose, CA | 4 | 3 (75%) | 0 |
+| Los Angeles, CA | 1 | 0 | 0 |
 | Sacramento, CA | 1 | 1 | 0 |
 | San Francisco, CA | 1 | 1 | 0 |
 | Roseville, CA | 1 | 1 | 0 |
-| 22 other CA cities | 22 | 18 (82%) | 1 |
+| 21 other CA cities | 21 | 18 (86%) | 0 |
 
-**The one live answer was in Los Angeles.**
+**Zero live answers across every city.**
 
 ---
 
