@@ -13,6 +13,12 @@
     <lastmod>2026-04-16</lastmod>
   </url>
   <url>
+    <loc>https://nightleakaudit.com/report</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-04-17</lastmod>
+  </url>
+  <url>
     <loc>https://nightleakaudit.com/medicare</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
