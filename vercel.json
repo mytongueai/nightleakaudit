@@ -28,6 +28,8 @@
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/sms-consent", "destination": "/sms-consent.html" },
     { "source": "/support", "destination": "/support.html" },
-    { "source": "/do-not-contact", "destination": "/do-not-contact.html" }
+    { "source": "/do-not-contact", "destination": "/do-not-contact.html" },
+    { "source": "/report", "destination": "/report.html" },
+    { "source": "/map", "destination": "/map.html" }
   ]
 }
