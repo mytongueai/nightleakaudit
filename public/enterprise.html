@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Dental Clearance — NightLeak</title>
+<meta name="description" content="Medicare-patient dental clearance, at scale. For dialysis networks, transplant centers, health systems, and Medicare Advantage plans. Patient-facing US agents, Cebu verification back office, HIPAA-aware ops.">
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080A09;
+  --bg2: #0D110E;
+  --surface: #111814;
+  --green: #00E87A;
+  --green-dim: rgba(0,232,122,0.08);
+  --green-glow: rgba(0,232,122,0.15);
+  --text: #E8F0EB;
+  --text2: #7A9080;
+  --text3: #3A4A40;
+  --border: #1A2420;
+  --border2: #243028;
+  --red: #FF4040;
+  --amber: #F5A623;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,232,122,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,232,122,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  animation: scan 4s ease-in-out infinite;
+  z-index: 100;
+  opacity: 0.4;
+}
+@keyframes scan { 0%,100%{top:0;opacity:0} 10%{opacity:0.4} 90%{opacity:0.4} }
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.topbar {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'Syne Mono', monospace;
+  font-size: 14px;
+  color: var(--green);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.status-tag {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+}
+
+.hero { padding: 72px 0 48px; animation: fadeUp 0.8s ease both; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid rgba(0,232,122,0.2);
+  padding: 5px 12px;
+  border-radius: 2px;
+  margin-bottom: 32px;
+  background: var(--green-dim);
+}
+
+.hero-number {
+  font-size: clamp(72px, 16vw, 128px);
+  font-weight: 800;
+  line-height: 0.9;
+  color: var(--green);
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 80px rgba(0,232,122,0.3);
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-number-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.hero-headline {
+  font-size: clamp(24px, 4.2vw, 34px);
+  font-weight: 700;
+  line-height: 1.22;
+  color: var(--text);
+  margin-bottom: 20px;
+  max-width: 620px;
+  letter-spacing: -0.01em;
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 48px;
+}
+
+.proof-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 56px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  animation: fadeUp 0.8s ease 0.15s both;
+}
+.proof-item {
+  padding: 18px 16px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.proof-item:last-child { border-right: none; }
+.proof-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+.proof-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section { margin-bottom: 56px; animation: fadeUp 0.8s ease 0.2s both; }
+.section-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.cat-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px 16px;
+  position: relative;
+  font-size: 14px;
+  color: var(--text);
+}
+.cat-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--green);
+  border-radius: 2px 0 0 2px;
+}
+.cat-meta {
+  display: block;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step:last-child { border-bottom: none; }
+.step-num {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  min-width: 32px;
+  margin-top: 2px;
+  letter-spacing: 0.08em;
+}
+.step-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.step-detail {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 36px;
+  margin-bottom: 48px;
+  animation: fadeUp 0.8s ease 0.25s both;
+  position: relative;
+  overflow: hidden;
+}
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+.form-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.form-sub {
+  font-size: 12px;
+  color: var(--green);
+  margin-bottom: 28px;
+  font-family: 'Syne Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.form-fields { display: flex; flex-direction: column; gap: 14px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+.field-label {
+  display: block;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--text2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.field-input, .field-select, .field-textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  padding: 13px 16px;
+  font-size: 15px;
+  font-family: 'Syne', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field-textarea { resize: vertical; min-height: 96px; line-height: 1.5; }
+.field-select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--green) 50%),
+                    linear-gradient(135deg, var(--green) 50%, transparent 50%);
+  background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+.field-input::placeholder, .field-textarea::placeholder { color: var(--text3); }
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(0,232,122,0.08);
+}
+
+.honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+}
+
+.submit-btn {
+  width: 100%;
+  background: var(--green);
+  color: var(--bg);
+  border: none;
+  padding: 17px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Syne', sans-serif;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.15s;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.submit-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s;
+}
+.submit-btn:hover::after { transform: translateX(100%); }
+.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(0,232,122,0.3); }
+.submit-btn:active { transform: translateY(0); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.form-guarantee {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  text-align: center;
+  margin-top: 14px;
+  letter-spacing: 0.05em;
+}
+
+.form-success, .form-error {
+  display: none;
+  padding: 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+.form-success {
+  background: var(--green-dim);
+  border: 1px solid rgba(0,232,122,0.3);
+  color: var(--text);
+}
+.form-success strong { color: var(--green); }
+.form-error {
+  background: rgba(255,64,64,0.08);
+  border: 1px solid rgba(255,64,64,0.3);
+  color: var(--text);
+}
+
+.boundary-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 22px 24px;
+  margin-top: 20px;
+}
+.boundary-q {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.boundary-a {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0 48px;
+  text-align: center;
+}
+.footer-text {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+}
+.footer-text a { color: var(--text2); text-decoration: none; }
+.footer-text a:hover { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      NIGHTLEAK / ENTERPRISE
+    </div>
+    <div class="status-tag">INTAKE OPEN</div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-label">
+      <span>◉</span> FOR HEALTH SYSTEMS + MA PLANS
+    </div>
+    <div class="hero-number">5.3M</div>
+    <div class="hero-number-label">Medicare dental clearance episodes / year / US</div>
+    <h1 class="hero-headline">
+      Your patients need dental clearance before dialysis, transplant, cardiac surgery, and biologics. Nobody is running it at scale.
+    </h1>
+    <p class="hero-sub">
+      NightLeak operates a clearance call army: US-based patient-facing agents (Nashville / Atlanta), Cebu-based verification back-office, HIPAA-aware ops. We take the clearance workflow off your case managers and your social workers. You stop losing surgery slots and transplant windows to a missing dental note.
+    </p>
+
+    <div class="proof-strip">
+      <div class="proof-item">
+        <div class="proof-num">5 min</div>
+        <div class="proof-label">Handle time target</div>
+      </div>
+      <div class="proof-item">
+        <div class="proof-num">24 / 7</div>
+        <div class="proof-label">Patient reach window</div>
+      </div>
+      <div class="proof-item">
+        <div class="proof-num">8</div>
+        <div class="proof-label">Clinical categories</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">CATEGORIES WE RUN</div>
+    <div class="cat-grid">
+      <div class="cat-item">Dialysis &amp; CKD<span class="cat-meta">516K on dialysis · 125K new / yr</span></div>
+      <div class="cat-item">Kidney Transplant<span class="cat-meta">105K waitlist · 27K / yr</span></div>
+      <div class="cat-item">Other Solid Organ<span class="cat-meta">21K heart / liver / lung / pancreas / yr</span></div>
+      <div class="cat-item">Head &amp; Neck Cancer<span class="cat-meta">72K new diagnoses / yr</span></div>
+      <div class="cat-item">Bone Marrow / HCT<span class="cat-meta">22K transplants / yr</span></div>
+      <div class="cat-item">Cardiac / Valve<span class="cat-meta">194K surgical + TAVR / yr</span></div>
+      <div class="cat-item">Joint Replacement<span class="cat-meta">1.5M hip + knee / yr</span></div>
+      <div class="cat-item">Biologics / Immunosuppression<span class="cat-meta">2.5M active · 500K new starts / yr</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">WHAT WE TAKE OFF YOUR PLATE</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Patient outreach</div>
+          <div class="step-detail">We call the patient, explain clearance in plain Medicare-trust language, answer objections. US-based agent. Average handle time 5 minutes at steady state.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Dental verification</div>
+          <div class="step-detail">Cebu verification desk confirms the patient's dental home, captures the clearance form, follows up on missing notes. HIPAA-aware. Never patient-facing on first contact.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">Clearance report back to you</div>
+          <div class="step-detail">Structured report delivered to the referring case manager or surgical coordinator. Lives inside your existing EHR workflow or as a standalone dashboard. You own the record.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-title">Continuous optimization</div>
+          <div class="step-detail">Every call is tagged, every objection mapped, every win studied. Handle time falls, conversion rises, your case managers stop making the call themselves.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="form-card">
+      <div class="form-title">Request an intake call</div>
+      <div class="form-sub">Direct line to Eric Chong · 24-hour response</div>
+
+      <form id="inboundForm" action="https://formspree.io/f/mbdqypgn" method="POST" novalidate>
+
+        <input type="hidden" name="_subject" value="[NightLeak Enterprise] Inbound intake">
+        <input type="hidden" name="source" value="call-army-enterprise">
+        <input type="hidden" name="utm_source" id="utm_source">
+        <input type="hidden" name="utm_medium" id="utm_medium">
+        <input type="hidden" name="utm_campaign" id="utm_campaign">
+        <input type="hidden" name="referrer" id="referrer">
+        <input type="hidden" name="landed_at" id="landed_at">
+
+        <div class="honeypot" aria-hidden="true">
+          <label>Do not fill<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <div class="form-fields">
+
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="name">Name</label>
+              <input class="field-input" type="text" id="name" name="name" required autocomplete="name">
+            </div>
+            <div>
+              <label class="field-label" for="title">Title</label>
+              <input class="field-input" type="text" id="title" name="title" required autocomplete="organization-title" placeholder="e.g. VP Patient Services">
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="org">Organization</label>
+              <input class="field-input" type="text" id="org" name="org" required autocomplete="organization">
+            </div>
+            <div>
+              <label class="field-label" for="org_type">Organization type</label>
+              <select class="field-select" id="org_type" name="org_type" required>
+                <option value="" disabled selected>Select…</option>
+                <option>Dialysis network</option>
+                <option>Transplant center</option>
+                <option>Health system / hospital network</option>
+                <option>Medicare Advantage plan</option>
+                <option>ACO / clinically integrated network</option>
+                <option>Cancer center</option>
+                <option>Specialty group practice</option>
+                <option>Consulting / advisory</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="volume">Est. clearance volume</label>
+              <select class="field-select" id="volume" name="volume" required>
+                <option value="" disabled selected>Select…</option>
+                <option>Under 500 / yr</option>
+                <option>500 – 2,000 / yr</option>
+                <option>2,000 – 10,000 / yr</option>
+                <option>10,000 – 50,000 / yr</option>
+                <option>50,000+ / yr</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="timeline">Timeline</label>
+              <select class="field-select" id="timeline" name="timeline" required>
+                <option value="" disabled selected>Select…</option>
+                <option>Piloting in next 30 days</option>
+                <option>Next quarter</option>
+                <option>This fiscal year</option>
+                <option>Exploring, no timeline yet</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="email">Work email</label>
+              <input class="field-input" type="email" id="email" name="email" required autocomplete="email">
+            </div>
+            <div>
+              <label class="field-label" for="phone">Phone (optional)</label>
+              <input class="field-input" type="tel" id="phone" name="phone" autocomplete="tel">
+            </div>
+          </div>
+
+          <div>
+            <label class="field-label" for="trigger">What triggered this outreach?</label>
+            <textarea class="field-textarea" id="trigger" name="trigger" placeholder="A missed surgery. A patient story. A board push. A specific problem you want solved. Anything that helps us come in ready." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">Request the intake call →</button>
+
+          <div class="form-guarantee">NO SPAM · NO OUTSOURCED SDR · ERIC READS EVERY ONE</div>
+        </div>
+
+        <div class="form-success" id="formSuccess">
+          <strong>Got it.</strong> Your request is in. Eric will respond within 24 hours from eric@trynightleak.com with a 30-minute intake slot. If you want to move faster, text or call him directly.
+        </div>
+
+        <div class="form-error" id="formError">
+          Something didn't go through. Email <a href="mailto:eric@trynightleak.com" style="color:var(--green)">eric@trynightleak.com</a> directly and we'll get back within the hour.
+        </div>
+
+      </form>
+    </div>
+
+    <div class="boundary-box">
+      <div class="boundary-q">What this page is not</div>
+      <div class="boundary-a">This isn't for individual dental practices — that's <a href="/audit" style="color:var(--green);text-decoration:none">the audit flow</a>. This isn't for patients — that's <a href="https://joinyesonus.com" style="color:var(--green);text-decoration:none">YesOnUs</a>. This is for systems: dialysis, transplant, hospital, MA plan. If you run a book of Medicare patients who need dental clearance and it's currently eating your case managers, fill the form.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-text">
+      NIGHTLEAK · HEALTH STARTS FROM THE MOUTH · <a href="/audit">FOR PRACTICES</a> · <a href="https://joinyesonus.com">FOR PATIENTS</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  document.getElementById('utm_source').value = params.get('utm_source') || '';
+  document.getElementById('utm_medium').value = params.get('utm_medium') || '';
+  document.getElementById('utm_campaign').value = params.get('utm_campaign') || '';
+  document.getElementById('referrer').value = document.referrer || '';
+  document.getElementById('landed_at').value = new Date().toISOString();
+
+  var form = document.getElementById('inboundForm');
+  var btn = document.getElementById('submitBtn');
+  var success = document.getElementById('formSuccess');
+  var error = document.getElementById('formError');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    success.style.display = 'none';
+    error.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    var data = new FormData(form);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function(res) {
+      if (res.ok) {
+        form.querySelector('.form-fields').style.display = 'none';
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        throw new Error('Bad response');
+      }
+    }).catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Request the intake call →';
+      error.style.display = 'block';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
